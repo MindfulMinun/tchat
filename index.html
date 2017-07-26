@@ -10,7 +10,7 @@
         <link rel="shortcut icon" href="{{ site.icon }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-        <link rel="stylesheet" href="{{ site.root }}/styles/master.css">
+        <link rel="stylesheet" href="{{ site.root }}/styles/master.css?{{ site.v }}">
     </head>
     <body class="body">
 
@@ -175,9 +175,9 @@
     </script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js" charset="utf-8"></script>
-    <script src="auth.js" charset="utf-8"></script>
-    <script src="account.js" charset="utf-8"></script>
-    <script src="tchat.js" charset="utf-8"></script>
+    <script src="auth.js?{{ site.v }}" charset="utf-8"></script>
+    <script src="account.js?{{ site.v }}" charset="utf-8"></script>
+    <script src="tchat.js?{{ site.v }}" charset="utf-8"></script>
     <script type="text/javascript">
         //! UI
         $('.button-collapse').sideNav({
