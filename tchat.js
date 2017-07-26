@@ -48,7 +48,7 @@
         newdbr.set(meta);
     }
     function updateScroll() {
-        if (document.getElementById('chat').classList.contains('active')) {
+        if (document.getElementById('tchat').classList.contains('active')) {
             var el = document.getElementsByClassName('body')[0];
             el.scrollTop = el.scrollHeight;
         }
