@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,54 +7,10 @@
         <title>Firebase Tchat App</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#212121">
+        <link rel="shortcut icon" href="{{ site.icon }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-        <style media="screen">
-            .body {
-                background-color: #1e1e1e;
-                color: #fafafa;
-            }
-            .nav-btn {
-                color: #fafafa;
-                position: fixed;
-                top: 0; left: 0;
-            }
-            .nav-btn:hover {
-                background-color: rgba(0,0,0,0.1)
-            }
-            .absolute-center {
-                position: fixed;
-                top: 50%; left: 50%;
-                transform: translate(-50%, -50%);
-            }
-            .btn {
-                color: white !important;
-                background-color: #2196F3 !important;
-            }
-            .alt-btn {
-                color: #2196F3 !important;
-                background-color: white !important;
-            }
-            #list {
-                font-size: 1.5rem;
-                padding-bottom: 105px;
-            }
-            .chat-container {
-
-            }
-            .chat-input {
-                background-color: #313131;
-                position: fixed;
-                bottom: 0; left: 0; right: 0;
-                width: 100%;
-            }
-            [disabled], [disabled] + label {
-                color: rgba(255,255,255,0.26) !important;
-            }
-            [disabled] {
-                border-bottom: 1px dotted rgba(255,255,255,0.26) !important;
-            }
-        </style>
+        <link rel="stylesheet" href="/styles/master.css">
     </head>
     <body class="body">
 
@@ -161,7 +119,7 @@
                 <section class="section">
                     <h3>About</h3>
                     <!-- TODO: Set this to auto-rewrite itself -->
-                    <p class="flow-text">Version Alpha 0.7.4</p>
+                    <p class="flow-text">Version {{ site.version }}</p>
                 </section>
             </div>
             <!-- <div id="page4" class="container">Test 4</div> -->

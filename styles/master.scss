@@ -1,0 +1,44 @@
+---
+---
+.body {
+    background-color: #1e1e1e;
+    color: #fafafa;
+}
+.nav-btn {
+    color: #fafafa;
+    position: fixed;
+    top: 0; left: 0;
+    &:hover {
+        background-color: rgba(0,0,0,0.1)
+    }
+}
+.absolute-center {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+.btn {
+    color: white !important;
+    background-color: #2196F3 !important;
+}
+.alt-btn {
+    color: #2196F3 !important;
+    background-color: white !important;
+}
+#list {
+    font-size: 1.5rem;
+    padding-bottom: 105px;
+}
+// .chat-container { }
+.chat-input {
+    background-color: #313131;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    width: 100%;
+}
+[disabled], [disabled] + label {
+    color: rgba(255,255,255,0.26) !important;
+}
+[disabled] {
+    border-bottom: 1px dotted rgba(255,255,255,0.26) !important;
+}
