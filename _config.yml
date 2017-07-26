@@ -1,3 +1,6 @@
 icon: 'https://benji.pw/assets/icons/notification.png'
 version: 'Public Beta 1.0.0'
-root: 'https://benji.pw/tchat/'
+# Root must be followed by a slash `/`
+root: 'https://benji.pw/tchat'
+
+accent: '#448aff'
