@@ -62,7 +62,7 @@
     });
 
     function updateUI() {
-        var anonUserIcon = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
+        var anonUserIcon = 'https://benji.pw/assets/icons/t.png',
             user = firebase.auth().currentUser;
         if (user) {
             welcome.innerText      = "Hi, " + (user.displayName || 'Anonymous') + '!';
