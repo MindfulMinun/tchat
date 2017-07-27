@@ -18,12 +18,27 @@
             errorHandler(e);
         });
     });
+    googleSignIn.addEventListener('click', function () {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+          var token = result.credential.accessToken;
+          var user = result.user;
+        }).catch(function(e) {
+          // Handle Errors here.
+          var errorCode = e.code;
+          var errorMessage = e.message;
+          var email = e.email;
+          var credential = e.credential;
+          errorHandler(e)
+        });
+        // firebase.auth().signInWithRedirect(provider);
+    });
     signUp.addEventListener('click', function () {
         //! TODO: Verify real email
         var email = emailTxt.value;
         var pword = pwordTxt.value;
         auth.createUserWithEmailAndPassword(email, pword).catch(function (e) {
-            console.log(e);
+            errorHandler(e);
         });
     });
     signOut.addEventListener('click', function () {
