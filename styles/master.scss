@@ -1,6 +1,7 @@
 ---
 ---
 $bg-color: #1e1e1e;
+$input-bg: #313131;
 // $accent: #2196F3;
 $accent: #448aff;
 
@@ -12,6 +13,7 @@ $accent: #448aff;
     color: #fafafa;
     position: fixed;
     top: 0; left: 0;
+    z-index: 10;
     &:hover {
         background-color: rgba(0,0,0,0.1)
     }
@@ -28,10 +30,6 @@ $accent: #448aff;
 .alt-btn {
     color: $accent !important;
     background-color: white !important;
-}
-#list {
-    font-size: 1.5rem;
-    padding-bottom: 105px;
 }
 //! Materialize input fields
 /* label color */
@@ -56,11 +54,35 @@ $accent: #448aff;
     color: $accent !important;
 }
 
-.chat-input {
-    background-color: #313131;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    width: 100%;
+#tchat {
+    .chat-header {
+        background-color: $input-bg;
+        position: fixed;
+        height: 115px;
+        top: 0; left: 0; right: 0;
+    }
+    .chat-input {
+        background-color: #313131;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 77px;
+        width: 100%;
+    }
+  .chat-container {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: 300;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+    overflow: hidden;
+    overflow-y: auto;
+    height: calc(100vh - 220px);
+    #list {
+      margin: 0;
+      padding: 0;
+    }
+  }
 }
 [disabled], [disabled] + label {
     color: rgba(255,255,255,0.26) !important;

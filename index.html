@@ -99,19 +99,22 @@
             </div>
             <div id="tchat">
                 <!-- tchat section -->
+                <div class="chat-header z-depth-1">
+                    <div class="container">
+                        <h3>tchat</h3>
+                        <p>Current channel: <span id="chName"></span></p>
+                    </div>
+                </div>
                 <div class="chat-container container">
                     <section class="section">
-                        <h3>tchat</h3>
-                        <div id="chats" class="flow-text">
-                            <ul id="list"></ul>
-                        </div>
+                        <ul id="list">
+                        </ul>
                     </section>
                 </div>
-                <div class="chat-input section z-depth-3">
+                <div class="chat-input z-depth-0">
                     <div class="container">
                         <div class="input-field">
-                            <input type="text" id="chatTxt">
-                            <label for="chatTxt">Send something silly</label>
+                            <input type="text" id="chatTxt" placeholder="Send something silly">
                         </div>
                     </div>
                 </div>
