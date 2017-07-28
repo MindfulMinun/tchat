@@ -5,6 +5,9 @@ $input-bg: #313131;
 // $accent: #2196F3;
 $accent: #448aff;
 
+$input-height: 84px;
+$header-height: 115px;
+
 .body {
     background-color: $bg-color;
     color: #fafafa;
@@ -58,31 +61,32 @@ $accent: #448aff;
     .chat-header {
         background-color: $input-bg;
         position: fixed;
-        height: 115px;
+        height: $header-height;
         top: 0; left: 0; right: 0;
     }
     .chat-input {
         background-color: #313131;
         position: fixed;
         bottom: 0; left: 0; right: 0;
-        height: 77px;
+        height: $input-height;
         width: 100%;
+        .container {
+            padding-top: 0.5rem;
+        }
     }
-  .chat-container {
-    position: absolute;
-    font-size: 1.5rem;
-    font-weight: 300;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -45%);
-    overflow: hidden;
-    overflow-y: auto;
-    height: calc(100vh - 220px);
-    #list {
-      margin: 0;
-      padding: 0;
+    .chat-container {
+        font-size: 1.5rem;
+        font-weight: 300;
+        padding: 0;
+        margin-top: $header-height;
+        overflow: hidden;
+        overflow-y: auto;
+        height: calc(100vh - (#{$header-height} + #{$input-height}));
+        #list {
+            margin: 0;
+            padding: 0;
+        }
     }
-  }
 }
 [disabled], [disabled] + label {
     color: rgba(255,255,255,0.26) !important;
