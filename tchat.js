@@ -8,6 +8,10 @@
         query    = messages.limitToLast(100),
         chattxt  = document.getElementById('chatTxt');
 
+    //! TODO: Add support for channels
+    //! TODO: Add support for images
+    //! TODO: Add support for pseudo-Markdown
+
     channel.once('value').then(function (snap) {
         var data = snap.val()
         document.getElementById('chName').innerText = data.meta.name;
@@ -32,7 +36,9 @@
 
     chattxt.addEventListener('keypress', function (e) {
         if (e.keyCode == 13 && chattxt.value !== '') {
-            //! TODO: Check if channel is active
+            //! XXX: FIXME: Verify that `channel` is active
+            //! XXX: Add character limit
+            //! XXX: Add message throttling.
             if (firebase.auth().currentUser) {
                 sendMessage(chattxt.value, (firebase.auth().currentUser.displayName || 'Anon.'));
             } else {

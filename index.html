@@ -36,7 +36,6 @@
             </div>
         </div>
 
-
         <div id="appContainer" class="hide">
             <div class="">
                 <ul class="tabs hide">
@@ -65,11 +64,6 @@
                             <button id="googleSignIn" class="btn alt-btn waves-effect">Sign in with Google</button>
                             <button id="signUp" class="btn alt-btn waves-effect">Sign up</button>
                         </div>
-                        <!-- <div class="section">
-                            <button id="googleSignIn" class="btn alt-btn waves-effect" disabled>
-                                Sign in with Google
-                            </button>
-                        </div> -->
                     </div>
                     <div id="accountInfo" class="hide">
                         <button id="signOut" class="btn">Log out</button>
@@ -136,7 +130,7 @@
                     <ul class="browser-default">
                         <li><a href="https://github.com/MindfulMinun/tchat/issues">Report an issue.</a></li>
                         <li><a href="https://github.com/MindfulMinun/tchat">View source code</a></li>
-                        <li><a href="https://github.com/MindfulMinun/tchat/blob/gh-pages/LICENSE">View License</a></li>
+                        <li><a href="https://github.com/MindfulMinun/tchat/blob/gh-pages/LICENSE">View license</a></li>
                         <li><a href="https://github.com/MindfulMinun/tchat/blob/gh-pages/readme.md">View readme file</a></li>
                     </ul>
                 </p>
@@ -170,7 +164,7 @@
     </body>
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
     <script type="text/javascript">
-        // Initialize Firebase
+        //! Initialize Firebase
         var config = {
           apiKey: "AIzaSyC1SIFXHnJGmXKlx5VkNezkeDNtC5sF0Ew",
           authDomain: "tchat-a244d.firebaseapp.com",
@@ -190,6 +184,7 @@
         //! UI
         $.getJSON("https://api.github.com/repos/MindfulMinun/tchat/commits", function(data) {
             //! Latest commit data
+            //! XXX: Maybe remove commit message?
             $('.commit.user').text(data[0].commit.committer.name);
             $('.commit.message').text(data[0].commit.message);
             $('.commit.time').text(
@@ -204,12 +199,15 @@
             // onOpen : function (el) {},
             // onClose: function (el) {}
         });
-        $('select').material_select();
+        $('select').material_select({
+        // XXX: Redundant? No selects on the page.
+        });
         $('a.tlink').on('click', function (e) {
             $('ul.tabs').tabs('select_tab', this.hash.slice(1));
             e.preventDefault();
         });
         $(document).ready(function () {
+            //! XXX: FIXME: Listen until *all* the assets are ready, not just `index`
             $('.absolute-center').remove();
             $('#appContainer').removeClass('hide');
         });
