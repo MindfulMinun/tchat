@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     window.tchat = {};
-    window.tchat.channel = function (channelName) {
-        channelName = channelName || 'global';
+    window.tchat.channel = function (channelName, switching) {
+        channelName = channelName.toLowerCase() || 'global';
         //! Set some constants
         const
             list     = document.getElementById('list'),
@@ -16,6 +16,10 @@
         //! TODO: Add support for images
         //! TODO: Add support for pseudo-Markdown
 
+        if (switching === true) {
+            Materialize.toast('Switching to channel ' + channelName + '&hellip;', 3000);
+        }
+
         //! Before appending messages, clear current ones in case of a channel change.
         list.innerHTML = '';
 
@@ -25,7 +29,7 @@
             try {
                 channelDisplay.innerText = data.meta.name;
             } catch (e) {
-                Materialize.toast("That’s not a valid channel. Switching to global&hellip;", 7000);
+                Materialize.toast("That’s not a valid channel. Switching to global&hellip;", 3000);
                 tchat.channel('global');
             }
         });
@@ -48,14 +52,14 @@
 
         //! Input handler
         chattxt.addEventListener('keypress', function (e) {
-            if (e.keyCode == 13 && chattxt.value !== '') {
+            if ((e.which === 13 || e.keyCode === 13) && chattxt.value !== '') {
                 //! XXX: FIXME: Verify that `channel` is active
                 //! XXX: Add character limit
                 //! XXX: Add message throttling.
                 if (firebase.auth().currentUser) {
                     sendMessage(chattxt.value, (firebase.auth().currentUser.displayName || 'Anon.'));
                 } else {
-                    Materialize.toast("You’re not logged in. Log in to send chats.", 7000)
+                    Materialize.toast("You’re not logged in. Log in to send chats.", 5000)
                 }
                 chattxt.value = '';
             }
@@ -131,5 +135,5 @@
             });
         });
     }
-    tchat.channel('global');
+    tchat.channel('global', false);
 }());
