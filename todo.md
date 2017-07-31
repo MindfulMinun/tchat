@@ -6,17 +6,20 @@
 - [x] Create Authentication
     - [x] Sign in with email
     - [x] Sign in with Google
-    - [x] Sign in anonymously.
+    - [ ] Sign in anonymously.
     - [x] Anon’s would still be able to read messages
 - [x] Create global messaging
-- [ ] Create uploader
+- [ ] Create image uploader
 
 
 ## Individual files
 - `index.html`
     - [ ] *FIXME*, 215: Listen until *all* the assets are ready, not just `index`
     - [ ] 193: Maybe remove commit message?
-    - [ ] 209: Redundant?
+    - [x] 209: Redundant?
+- `sw.js`
+    - [ ] Offline? Nahh
+    - [ ] Implement push notifications
 - `tchat.js`
     - [ ] 39-41
         - [ ] *FIXME*: Before sending a message, verify that `channel` is active.
@@ -25,10 +28,16 @@
             - (throttle = limit # of messages per second)
     - [ ] 11-14: Add support for the following:
         - [ ] Channels
-        - [ ] Images
-        - [ ] Pseudo-Markdown
+            - [ ] User-created channels
+            - [x] Switching back and forth between channels
+        - [ ] Pseudo-Markdown??
+            - [x] Bold
+            - [x] Italics
+            - [ ] Strikethrough
+            - [x] Links
+            - [ ] Images
 - `master.scss`
-    - [ ] Toasts
-        - [ ] Change bg to white
-        - [ ] Change to black text
+    - [x] Toasts
+        - [x] Change bg to white
+        - [x] Change to black text
         - [ ] Make links blue
