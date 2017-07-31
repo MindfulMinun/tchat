@@ -48,6 +48,32 @@ html, body.body {
     color: white !important;
     background-color: $accent !important;
 }
+.btn-flat {
+    color: white;
+}
+.btn-tool {
+    background-color: transparent;
+    box-shadow: none;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    vertical-align: middle;
+    transition: .3s ease-out;
+    &:focus {
+        background-color: transparent;
+    }
+    &:hover {
+        background-color: rgba(0,0,0,0.1);
+    }
+    i.material-icons {
+        text-align: center;
+        font-size: 1.6rem;
+        line-height: 40px;
+    }
+}
 .alt-btn {
     color: $accent !important;
     background-color: white !important;
@@ -73,6 +99,13 @@ html, body.body {
 /* icon prefix focus color */
 .input-field .prefix.active {
     color: $accent !important;
+}
+.modal {
+    transform: scaleX(1) !important;
+    color: #212121;
+    .btn-flat {
+        color: #212121;
+    }
 }
 
 #tchat {

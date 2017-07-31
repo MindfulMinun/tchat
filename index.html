@@ -1,5 +1,5 @@
----
----
+<!-- ---
+--- -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,8 +10,8 @@
         <link rel="shortcut icon" href="{{ site.icon }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-        <link rel="stylesheet" href="{{ site.root }}/styles/master.css?{{ site.v }}">
-        <!-- <link rel="stylesheet" href="/styles/master.testing.css"> -->
+        <!-- <link rel="stylesheet" href="{{ site.root }}/styles/master.css?{{ site.v }}"> -->
+        <link rel="stylesheet" href="/styles/master.testing.css">
     </head>
     <body class="body">
 
@@ -96,7 +96,12 @@
                 <div class="chat-header z-depth-1">
                     <div class="container">
                         <h3>tchat</h3>
-                        <p>Current channel: <span id="chName"></span></p>
+                        <p class="left truncate">Current channel: <span id="chName"></span></p>
+                        <div class="right">
+                            <button class="waves-effect waves-light btn-tool" data-target="switchChannel">
+                                <i class="material-icons" aria-label="Switch Channels">swap_horiz</i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="chat-container container">
@@ -160,6 +165,20 @@
                 <!-- <li><div class="divider"></div></li> -->
             </ul>
         </aside>
+        <aside id="switchChannel" class="modal">
+            <div class="modal-content">
+                <h4>Switch Channels</h4>
+                <p>Enter a channel ID to switch to that channel.</p>
+                <div class="input-field">
+                    <input id="channelSwitch" type="text" placeholder='Ex: "global"'>
+                    <!-- <label for="channelSwitch">Channel ID</label> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-action modal-close waves-effect btn-flat">Cancel</button>
+                <button class="modal-action waves-effect btn-flat" id="chBtn">Switch</button>
+            </div>
+        </aside>
 
     </body>
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
@@ -214,8 +233,28 @@
             $('ul.tabs').tabs('select_tab', this.hash.slice(1));
             e.preventDefault();
         });
+        $('#channelSwitch').on('keypress', function (e) {
+            if ((e.which === 13 || e.keyCode === 13) && this.value.length >= 3) {
+                tchat.channel(this.value, true);
+                $('.modal').modal('close');
+                this.value = '';
+            }
+        });
+        $('#chBtn').on('click', function () {
+            var s = document.getElementById('channelSwitch');
+            if (s.value.length >= 3) {
+                tchat.channel(s.value, true);
+                $('.modal').modal('close');
+                s.value = '';
+            }
+        });
         $(document).ready(function () {
             //! XXX: FIXME: Listen until *all* the assets are ready, not just `index`
+            $('.modal').modal({
+                dismissable: true,
+                inDuration: 250,
+                outDuration: 200
+            });
             $('.absolute-center').remove();
             $('#appContainer').removeClass('hide');
         });
