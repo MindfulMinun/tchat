@@ -181,7 +181,7 @@
     <script src="account.js?{{ site.v }}" charset="utf-8"></script>
     <script src="tchat.js?{{ site.v }}" charset="utf-8"></script>
     <script type="text/javascript">
-        //! UI
+        //! Commit data
         $.getJSON("https://api.github.com/repos/MindfulMinun/tchat/commits", function(data) {
             //! Latest commit data
             //! XXX: Maybe remove commit message?
@@ -191,6 +191,17 @@
           	     new Date(data[0].commit.committer.date).toLocaleString()
             );
         });
+        //! ServiceWorker registration
+        // if ('serviceWorker' in navigator) {
+        //     navigator.serviceWorker.register('./sw.js')
+        //     .then(registration => {
+        //         console.log('SW registered. Scope: ' + registration.scope);
+        //     })
+        //     .catch(err => {
+        //         console.warn('Rip. SW registration failed: ' + err);
+        //     })
+        // }
+        //! UI
         $('.button-collapse').sideNav({
             menuWidth: 300,
             edge: 'left',
@@ -198,9 +209,6 @@
             draggable: false
             // onOpen : function (el) {},
             // onClose: function (el) {}
-        });
-        $('select').material_select({
-        // XXX: Redundant? No selects on the page.
         });
         $('a.tlink').on('click', function (e) {
             $('ul.tabs').tabs('select_tab', this.hash.slice(1));
