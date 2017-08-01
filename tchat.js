@@ -95,9 +95,9 @@
             newdbr.set(meta);
         }
         function parseMessage(data) {
-            var url = /[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-            var em  = /\b_(\S[\s\S]*?)_\b/gi;
-            var bold = /(?:^| +)\*{1}(\S[\s\S]*?)\*{1}(?: +|$)/gi;
+            // var url = /[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            // var em  = /\b_(\S[\s\S]*?)_\b/gi;
+            // var bold = /(?:^| +)\*{1}(\S[\s\S]*?)\*{1}(?: +|$)/gi;
             data.msg = escapeHTML(data.msg);
             //! Link module
             data.msg = data.msg.replace(/[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, function (str) {
