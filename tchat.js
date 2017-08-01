@@ -100,7 +100,7 @@
             var bold = /(?:^| +)\*{1}(\S[\s\S]*?)\*{1}(?: +|$)/gi;
             data.msg = escapeHTML(data.msg);
             //! Link module
-            data.msg = data.msg.replace(url, function (str) {
+            data.msg = data.msg.replace(/[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, function (str) {
                 var a = document.createElement('a'),
                     h = Boolean(str.startsWith('http://') || str.startsWith('https://'));
                 h ? a.href = str : a.href = '//' + str;
@@ -109,13 +109,13 @@
                 return a.outerHTML;
             });
             //! Bold module
-            data.msg = data.msg.replace(bold, function (str, s1) {
+            data.msg = data.msg.replace(/(?:^| +)\*{1}(\S[\s\S]*?)\*{1}(?: +|$)/gi, function (str, s1) {
                 var strong = document.createElement('strong');
                 strong.innerHTML = s1;
                 return strong.outerHTML;
             })
             //! Em module
-            data.msg = data.msg.replace(em, function (str, s1) {
+            data.msg = data.msg.replace(/\b_(\S[\s\S]*?)_\b/gi, function (str, s1) {
                 var em = document.createElement('em');
                 em.innerHTML = s1;
                 return em.outerHTML;
