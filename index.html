@@ -9,17 +9,19 @@
         <meta name="theme-color" content="{{ site.accent }}">
         <link rel="shortcut icon" href="{{ site.icon }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">
         <link rel="stylesheet" href="{{ site.root }}/styles/master.css?{{ site.v }}">
         <!-- <link rel="stylesheet" href="/styles/master.testing.css"> -->
     </head>
     <body class="body">
 
-        <aside class="">
-            <a href="#" data-activates="slide-out" class="button-collapse btn-flat btn-large nav-btn">
+        <header>
+            <button class="btn-flat btn-large nav-btn"
+                data-activates="slide-out" aria-label="Toggle Navigation Menu"
+                id="aria-side-nav-btn">
                 <i class="material-icons">menu</i>
-            </a>
-        </aside>
+            </button>
+        </header>
 
 
         <div class="absolute-center">
@@ -98,7 +100,8 @@
                         <h3>tchat</h3>
                         <p class="left truncate">Current channel: <span id="chName"></span></p>
                         <div class="right">
-                            <button class="waves-effect waves-light btn-tool" data-target="switchChannel">
+                            <button class="waves-effect waves-light btn-tool" data-target="switchChannel"
+                                id="aria-switchChannelsBtn">
                                 <i class="material-icons" aria-label="Switch Channels">swap_horiz</i>
                             </button>
                         </div>
@@ -165,13 +168,14 @@
                 <!-- <li><div class="divider"></div></li> -->
             </ul>
         </aside>
-        <aside id="switchChannel" class="modal">
+
+        <aside id="switchChannel" class="modal" role="dialog" aria-labelledby="aria-switchChannel-header">
             <div class="modal-content">
-                <h4>Switch Channels</h4>
+                <h4 id="aria-switchChannel-header">Switch Channels</h4>
                 <p>Enter a channel ID to switch to that channel.</p>
                 <div class="input-field">
-                    <input id="channelSwitch" type="text" placeholder='Ex: "global"'>
-                    <!-- <label for="channelSwitch">Channel ID</label> -->
+                    <input id="switchChannelInput" type="text" placeholder='Ex: "global"'>
+                    <!-- <label for="switchChannelInput">Channel ID</label> -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -194,11 +198,12 @@
         };
         firebase.initializeApp(config);
     </script>
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js" charset="utf-8"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js" charset="utf-8"></script>
     <script src="auth.js?{{ site.v }}" charset="utf-8"></script>
     <script src="account.js?{{ site.v }}" charset="utf-8"></script>
     <script src="tchat.js?{{ site.v }}" charset="utf-8"></script>
+    <script src="a11y.js?{{ site.v }}" charset="utf-8"></script>
     <script type="text/javascript">
         //! Commit data
         $.getJSON("https://api.github.com/repos/MindfulMinun/tchat/commits", function(data) {
@@ -221,19 +226,21 @@
         //     })
         // }
         //! UI
-        $('.button-collapse').sideNav({
+        $('#aria-side-nav-btn').sideNav({
             menuWidth: 300,
             edge: 'left',
             closeOnClick: true,
-            draggable: false
-            // onOpen : function (el) {},
-            // onClose: function (el) {}
+            draggable: true,
+            onOpen : function (el) {},
+            onClose: function (el) {
+                a11y.sideNav('close');
+            }
         });
         $('a.tlink').on('click', function (e) {
             $('ul.tabs').tabs('select_tab', this.hash.slice(1));
             e.preventDefault();
         });
-        $('#channelSwitch').on('keypress', function (e) {
+        $('#switchChannelInput').on('keypress', function (e) {
             if ((e.which === 13 || e.keyCode === 13) && this.value.length >= 3) {
                 tchat.channel(this.value, true);
                 $('.modal').modal('close');
@@ -241,7 +248,7 @@
             }
         });
         $('#chBtn').on('click', function () {
-            var s = document.getElementById('channelSwitch');
+            var s = document.getElementById('switchChannelInput');
             if (s.value.length >= 3) {
                 tchat.channel(s.value, true);
                 $('.modal').modal('close');
@@ -253,7 +260,10 @@
             $('.modal').modal({
                 dismissable: true,
                 inDuration: 250,
-                outDuration: 200
+                outDuration: 200,
+                complete: function () {
+                    a11y.dialog('close', 'switchChannel');
+                }
             });
             $('.absolute-center').remove();
             $('#appContainer').removeClass('hide');
