@@ -100,6 +100,9 @@
                         <h3>tchat</h3>
                         <p class="left truncate">Current channel: <span id="chName"></span></p>
                         <div class="right">
+                            <!-- <button class="waves-effect waves-light btn-tool">
+                                <i class="material-icons">settings</i>
+                            </button> -->
                             <button class="waves-effect waves-light btn-tool" data-target="switchChannel"
                                 id="aria-switchChannelsBtn">
                                 <i class="material-icons" aria-label="Switch Channels">swap_horiz</i>
@@ -109,7 +112,7 @@
                 </div>
                 <div class="chat-container container">
                     <section class="section flow-text">
-                        <ul id="list">
+                        <ul id="list" aria-live="polite">
                         </ul>
                     </section>
                 </div>
@@ -154,22 +157,24 @@
                 <li>
                     <div class="user-view">
                         <div class="background blue"><!-- Optional Image --></div>
-                        <a href="#!user">
-                            <img class="circle userImg" src="https://benji.pw/assets/icons/t.png">
+                        <a href="">
+                            <img class="circle userImg" src="https://benji.pw/assets/icons/t.png"
+                                alt="User image">
                         </a>
-                        <a href="#!name"><span class="white-text name">Not logged in.</span></a>
-                        <a href="#!email"><span class="white-text email"></span></a>
+                        <a href=""><span class="white-text name">Not logged in.</span></a>
+                        <a href=""><span class="white-text email"></span></a>
                     </div>
                 </li>
-                <li><a class="subheader">Navigation</a></li>
+                <li><a class="subheader" href="">Navigation</a></li>
                 <li><a class="waves-effect tlink" href="#account">View Account</a></li>
                 <li><a class="waves-effect tlink" href="#tchat">tchat</a></li>
                 <li><a class="waves-effect tlink" href="#about">About</a></li>
-                <!-- <li><div class="divider"></div></li> -->
+                <li><div class="divider"></div></li>
             </ul>
         </aside>
 
-        <aside id="switchChannel" class="modal" role="dialog" aria-labelledby="aria-switchChannel-header">
+        <aside id="switchChannel" class="modal"
+            role="dialog" aria-labelledby="aria-switchChannel-header">
             <div class="modal-content">
                 <h4 id="aria-switchChannel-header">Switch Channels</h4>
                 <p>Enter a channel ID to switch to that channel.</p>
@@ -198,12 +203,12 @@
         };
         firebase.initializeApp(config);
     </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js" charset="utf-8"></script>
-    <script src="auth.js?{{ site.v }}" charset="utf-8"></script>
-    <script src="account.js?{{ site.v }}" charset="utf-8"></script>
-    <script src="tchat.js?{{ site.v }}" charset="utf-8"></script>
-    <script src="a11y.js?{{ site.v }}" charset="utf-8"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
+    <script src="auth.js?{{ site.v }}" defer></script>
+    <script src="account.js?{{ site.v }}" defer></script>
+    <script src="tchat.js?{{ site.v }}" defer></script>
+    <script src="a11y.js?{{ site.v }}" defer></script>
     <script type="text/javascript">
         //! Commit data
         $.getJSON("https://api.github.com/repos/MindfulMinun/tchat/commits", function(data) {
@@ -216,15 +221,14 @@
             );
         });
         //! ServiceWorker registration
-        // if ('serviceWorker' in navigator) {
-        //     navigator.serviceWorker.register('./sw.js')
-        //     .then(registration => {
-        //         console.log('SW registered. Scope: ' + registration.scope);
-        //     })
-        //     .catch(err => {
-        //         console.warn('Rip. SW registration failed: ' + err);
-        //     })
-        // }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+            .then(registration => {
+                console.log('SW registered. Scope: ' + registration.scope);
+            }, err => {
+                console.warn('ಠ_ಠ SW registration failed: ' + err)
+            })
+        }
         //! UI
         $('#aria-side-nav-btn').sideNav({
             menuWidth: 300,
@@ -241,7 +245,7 @@
             e.preventDefault();
         });
         $('#switchChannelInput').on('keypress', function (e) {
-            if ((e.which === 13 || e.keyCode === 13) && this.value.length >= 3) {
+            if ((e.which === 13 || e.keyCode === 13) && this.value.length > 1) {
                 tchat.channel(this.value, true);
                 $('.modal').modal('close');
                 this.value = '';
@@ -249,7 +253,7 @@
         });
         $('#chBtn').on('click', function () {
             var s = document.getElementById('switchChannelInput');
-            if (s.value.length >= 3) {
+            if (s.value.length > 1) {
                 tchat.channel(s.value, true);
                 $('.modal').modal('close');
                 s.value = '';
@@ -267,6 +271,12 @@
             });
             $('.absolute-center').remove();
             $('#appContainer').removeClass('hide');
+            Notification.requestPermission(function (e) {
+                if (e === 'granted') {
+                    tchat.notifs = true;
+                    tchat.loadedTime = Date.now();
+                }
+            });
         });
     </script>
 </html>

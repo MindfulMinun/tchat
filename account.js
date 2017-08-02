@@ -18,6 +18,7 @@
     updateUI();
     auth.onAuthStateChanged(function (user) {
         updateUI();
+        updateUserDB(user);
     });
     editAccount.addEventListener('click', function () {
         editAccount.classList.add('hide');
@@ -98,6 +99,21 @@
             displayName: displayName.value,
             photoURL: displayImg.value
         });
+    }
+    function updateUserDB(user) {
+        if (user) {
+            // console.log(user);
+            var usersDB = firebase.database().ref().child('users'),
+                uid     = user.uid,
+                me      = usersDB.child(uid);
+            me.set({
+                username: user.displayName,
+                photo   : user.photoURL,
+                lastUpdated: Number(Date.now())
+            });
+            // console.log('Updated user db');
+        }
+
     }
 
 }());

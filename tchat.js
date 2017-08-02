@@ -1,14 +1,19 @@
 (function() {
     'use strict';
-    window.tchat = {};
-    window.tchat.channel = function (channelName, switching) {
-        channelName = channelName.toLowerCase() || 'global';
-        //! Set some constants
-        const
+    window.tchat = {
+        currentChannel: {
+            id: null
+        },
+        notifs: false
+    };
+    window.tchat.channel = function (chID, switching) {
+        //! Variables & stuff
+        tchat.currentChannel.id = chID.toLowerCase()
+        var
             list     = document.getElementById('list'),
             chattxt  = document.getElementById('chatTxt'),
             channelDisplay = document.getElementById('chName'),
-            channel  = firebase.database().ref().child('chat/channels/' + channelName),
+            channel  = firebase.database().ref().child('chat/channels/' + tchat.currentChannel.id),
             messages = channel.child('msgs'),
             query    = messages.limitToLast(100);
 
@@ -17,14 +22,21 @@
         //! TODO: Add support for pseudo-Markdown
 
         if (switching === true) {
-            Materialize.toast('Switching to channel ' + channelName + '&hellip;', 3000);
+            Materialize.toast('Switching to channel ' + tchat.currentChannel.id + '&hellip;', 3000);
         }
 
         //! Before appending messages, clear current ones in case of a channel change.
+        //! Furthermore, clear all event listeners
         list.innerHTML = '';
+        chattxt.removeEventListener('keypress', inputListener);
+        channel.off('value');
+        query.off('child_added');
+        query.off('child_changed');
+        query.off('child_removed');
+
 
         //! Add listeners
-        channel.once('value').then(function (snapshot) {
+        channel.on('value', function (snapshot) {
             var data = snapshot.val();
             try {
                 channelDisplay.innerText = data.meta.name;
@@ -34,70 +46,81 @@
             }
         });
         query.on('child_added', function (snapshot) {
-            const li = document.createElement('li');
+            const li = document.createElement('li'),
+                data = snapshot.val();
             li.id = "msg" + snapshot.key;
-            li.innerHTML = parseMessage(snapshot.val());
-            list.appendChild(li);
-            updateScroll();
+            messageToString(data)
+            .then(function (string) {
+                li.innerHTML = string;
+                list.appendChild(li);
+                updateScroll();
+            });
         });
         query.on('child_changed', function (snapshot) {
-            const liChanged = document.getElementById("msg" + snapshot.key);
-            liChanged.innerHTML = parseMessage(snapshot.val())
+            const liChanged = document.getElementById("msg" + snapshot.key),
+                data = snapshot.val();
+            messageToString(data)
+            .then(function (string) {
+                liChanged.innerHTML = string;
+            });
 
         });
         query.on('child_removed', function (snapshot) {
             const liToRemove = document.getElementById("msg" + snapshot.key);
-            liToRemove.remove();
+            if (liToRemove) {
+                liToRemove.remove();
+            }
         });
 
         //! Input handler
-        chattxt.addEventListener('keypress', function (e) {
+        chattxt.addEventListener('keypress', inputListener);
+
+        function inputListener(e) {
             if ((e.which === 13 || e.keyCode === 13) && chattxt.value !== '') {
-                //! XXX: FIXME: Verify that `channel` is active
                 //! XXX: Add character limit
                 //! XXX: Add message throttling.
                 if (firebase.auth().currentUser) {
-                    sendMessage(chattxt.value, (firebase.auth().currentUser.displayName || 'Anon.'));
+                    sendMessage(chattxt.value);
                 } else {
                     Materialize.toast("You’re not logged in. Log in to send chats.", 5000)
                 }
                 chattxt.value = '';
             }
-        });
+        }
 
         //! Chacacter escaping
-        const ESC_MAP = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;'
-        };
         function escapeHTML(s) {
-            return s.replace(/[&<>'"]/g, function(c) {
+            return s.replace(/[<>]/g, function(c) {
                 return {
-                    '&': '&amp;',
+                    // '&': '&amp;',
                     '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#39;'
+                    '>': '&gt;'
+                    // '"': '&quot;',
+                    // "'": '&#39;'
                 }[c];
             });
         }
         function sendMessage(msg, from) {
-            var newdbr = messages.push(),
-                meta = {
+            var channel  = firebase.database().ref().child('chat/channels/' + tchat.currentChannel.id);
+            var messages = channel.child('msgs');
+            var meta = {
                     edited: false,
-                    from: from,
+                    from: firebase.auth().currentUser.uid,
                     msg: msg,
                     timestamp: Number(Date.now())
                 };
-            newdbr.set(meta);
+            messages.push().set(meta);
+            updateScroll()
         }
-        function parseMessage(data) {
+        function messageToString(data) {
             // var url = /[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             // var em  = /\b_(\S[\s\S]*?)_\b/gi;
             // var bold = /(?:^| +)\*{1}(\S[\s\S]*?)\*{1}(?: +|$)/gi;
+
+            //! Keep raw messsage for notification
+            var raw = data.msg;
+
+            //! HTML escape message
             data.msg = escapeHTML(data.msg);
             //! Link module
             data.msg = data.msg.replace(/[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, function (str) {
@@ -119,9 +142,34 @@
                 var em = document.createElement('em');
                 em.innerHTML = s1;
                 return em.outerHTML;
-            })
-            console.log(data.msg);
-            return '' + data.from + ": " + data.msg;
+            });
+
+            //! String constructor
+            return firebase.database().ref('/users/' + data.from).once('value').then(function(snapshot) {
+                var user = snapshot.val();
+                return [user.username, data.msg, user, data];
+            }).then(function (a) {
+                var notOldMessage = (Number(a[3].timestamp) > Number(tchat.loadedTime));
+                if (!document.hasFocus() && tchat.notifs === true && notOldMessage) {
+                    navigator.serviceWorker.ready.then(function (reg) {
+                        reg.showNotification(a[0] || 'New message', {
+                            body: a[1],
+                            icon: a[2].photo,
+                            badge: 'https://benji.pw/assets/icons/t.png',
+                            vibrate: [100,150,100],
+                            data: { id: 'tchat', url: 'https://benji.pw/tchat/' }
+                            // image: 'https://puu.sh/vK9JI/4b9737eec5.jpg',
+                            // actions: [
+                            //     {action: 'like', title: 'Like'},
+                            //     {action: 'save', title: 'Favorite'}
+                            // ]
+                        });
+                    });
+                }
+                return a;
+            }).then(function (a) {
+                return '' + a[0] + ': ' + a[1];
+            });
         }
         function updateScroll() {
             if (document.getElementById('tchat').classList.contains('active')) {

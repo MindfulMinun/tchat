@@ -22,7 +22,7 @@
     - [ ] Implement push notifications
 - `tchat.js`
     - [ ] 39-41
-        - [ ] *FIXME*: Before sending a message, verify that `channel` is active.
+        - [x] *FIXME*: Before sending a message, verify that `channel` is active.
         - [ ] Add a character limit to prevent spam
         - [ ] Add message throttle to prevent spam
             - (throttle = limit # of messages per second)
@@ -40,4 +40,4 @@
     - [x] Toasts
         - [x] Change bg to white
         - [x] Change to black text
-        - [ ] Make links blue
+        - [x] Make links blue
