@@ -11,10 +11,12 @@
     a11y.sideNav = function (action) {
         if (action === 'open') {
             previousActiveElement = document.activeElement || sideNavBtn;
+            sideNav.inert = false;
             sideNav.querySelector('a').focus();
             log('Focused sideNav');
         } else if (action === 'close') {
             previousActiveElement.focus();
+            sideNav.inert = true;
             log('Returned focus to previousActiveElement');
         }
     }
@@ -22,7 +24,9 @@
         var dialog = document.getElementById(id);
         previousActiveElement = document.activeElement;
         if (action === 'open') {
+            //! TODO: Use `dialog`, not jQuery, to open the modal
             $('.modal').modal('open');
+            dialog.inert = false;
             try {
                 dialog.querySelector('input').focus();
             } catch (e) {
@@ -32,6 +36,7 @@
             }
         } else if (action === 'close') {
             previousActiveElement.focus();
+            dialog.inert = true;
             log('Returned focus to previousActiveElement');
         }
     }
@@ -41,7 +46,7 @@
     sideNavBtn.addEventListener('click', function () {
         a11y.sideNav('open');
     });
-    function log(str, args) {
+    function log(str) {
         console.log('%ca11y:', 'color:#448aff', str);
     }
 }());

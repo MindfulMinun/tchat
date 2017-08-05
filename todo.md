@@ -14,9 +14,9 @@
 
 ## Individual files
 - `index.html`
+    - [ ] 115: Change ID `list` to something more descriptive
     - [ ] *FIXME*, 215: Listen until *all* the assets are ready, not just `index`
     - [ ] 193: Maybe remove commit message?
-    - [x] 209: Redundant?
 - `sw.js`
     - [ ] Offline? Nahh
     - [ ] Implement push notifications
