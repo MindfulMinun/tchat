@@ -10,7 +10,7 @@
         <link rel="shortcut icon" href="{{ site.icon }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">
-        <link rel="stylesheet" href="{{ site.root }}/styles/master.css?{{ site.v }}">
+        <link rel="stylesheet" href="{{ site.root }}/src/styles/master.css?{{ site.v }}">
         <!-- <link rel="stylesheet" href="/styles/master.testing.css"> -->
     </head>
     <body class="body">
@@ -112,6 +112,7 @@
                 </div>
                 <div class="chat-container container">
                     <section class="section flow-text">
+                        <!-- TODO: Change this ID, not very descriptive -->
                         <ul id="list" aria-live="polite">
                         </ul>
                     </section>
@@ -150,8 +151,7 @@
             <!-- <div id="page4" class="container">Test 4</div> -->
         </div>
 
-
-        <aside id="sideNavWrapper">
+        <aside id="sideNavWrapper" inert>
             <!-- Side Nav -->
             <ul id="slide-out" class="side-nav">
                 <li>
@@ -173,8 +173,8 @@
             </ul>
         </aside>
 
-        <aside id="switchChannel" class="modal"
-            role="dialog" aria-labelledby="aria-switchChannel-header">
+        <aside id="switchChannel" class="modal" role="dialog"
+            aria-labelledby="aria-switchChannel-header" inert>
             <div class="modal-content">
                 <h4 id="aria-switchChannel-header">Switch Channels</h4>
                 <p>Enter a channel ID to switch to that channel.</p>
@@ -205,10 +205,11 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
-    <script src="auth.js?{{ site.v }}" defer></script>
-    <script src="account.js?{{ site.v }}" defer></script>
-    <script src="tchat.js?{{ site.v }}" defer></script>
-    <script src="a11y.js?{{ site.v }}" defer></script>
+    <script src="./src/js/auth.js?{{ site.v }}" defer></script>
+    <script src="./src/js/account.js?{{ site.v }}" defer></script>
+    <script src="./src/js/tchat.js?{{ site.v }}" defer></script>
+    <script src="./src/js/a11y.js?{{ site.v }}" defer></script>
+    <script src="./src/js/inert.min.js" defer></script>
     <script type="text/javascript">
         //! Commit data
         $.getJSON("https://api.github.com/repos/MindfulMinun/tchat/commits", function(data) {
@@ -217,7 +218,7 @@
             $('.commit.user').text(data[0].commit.committer.name);
             $('.commit.message').text(data[0].commit.message);
             $('.commit.time').text(
-          	     new Date(data[0].commit.committer.date).toLocaleString()
+                 new Date(data[0].commit.committer.date).toLocaleString()
             );
         });
         //! ServiceWorker registration
