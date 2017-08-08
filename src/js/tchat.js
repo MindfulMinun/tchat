@@ -1,4 +1,4 @@
-(function() {
+(function($, M) {
     'use strict';
     window.tchat = {
         currentChannel: {
@@ -8,21 +8,20 @@
     };
     window.tchat.channel = function (chID, switching) {
         //! Variables & stuff
-        tchat.currentChannel.id = chID.toLowerCase()
+        tchat.currentChannel.id = chID.toLowerCase();
         var
             list     = document.getElementById('list'),
             chattxt  = document.getElementById('chatTxt'),
             channelDisplay = document.getElementById('chName'),
             channel  = firebase.database().ref().child('chat/channels/' + tchat.currentChannel.id),
-            messages = channel.child('msgs'),
-            query    = messages.limitToLast(100);
+            messages = channel.child('msgs').orderByKey();
 
         //! TODO: Add support for channels
         //! TODO: Add support for images
         //! TODO: Add support for pseudo-Markdown
 
         if (switching === true) {
-            Materialize.toast('Switching to channel ' + tchat.currentChannel.id + '&hellip;', 3000);
+            M.toast('Switching to channel ' + tchat.currentChannel.id + '&hellip;', 1500);
         }
 
         //! Before appending messages, clear current ones in case of a channel change.
@@ -30,9 +29,9 @@
         list.innerHTML = '';
         chattxt.removeEventListener('keypress', inputListener);
         channel.off('value');
-        query.off('child_added');
-        query.off('child_changed');
-        query.off('child_removed');
+        messages.off('child_added');
+        messages.off('child_changed');
+        messages.off('child_removed');
 
 
         //! Add listeners
@@ -41,31 +40,31 @@
             try {
                 channelDisplay.innerText = data.meta.name;
             } catch (e) {
-                Materialize.toast("That’s not a valid channel. Switching to global&hellip;", 3000);
+                M.toast("That’s not a valid channel. Switching to global&hellip;", 3000);
                 tchat.channel('global');
+                return;
             }
         });
-        query.on('child_added', function (snapshot) {
+        messages.on('child_added', function (snapshot) {
             const li = document.createElement('li'),
                 data = snapshot.val();
             li.id = "msg" + snapshot.key;
+            list.appendChild(li);
             messageToString(data)
             .then(function (string) {
                 li.innerHTML = string;
-                list.appendChild(li);
                 updateScroll();
             });
         });
-        query.on('child_changed', function (snapshot) {
+        messages.on('child_changed', function (snapshot) {
             const liChanged = document.getElementById("msg" + snapshot.key),
                 data = snapshot.val();
             messageToString(data)
             .then(function (string) {
                 liChanged.innerHTML = string;
             });
-
         });
-        query.on('child_removed', function (snapshot) {
+        messages.on('child_removed', function (snapshot) {
             const liToRemove = document.getElementById("msg" + snapshot.key);
             if (liToRemove) {
                 liToRemove.remove();
@@ -82,7 +81,7 @@
                 if (firebase.auth().currentUser) {
                     sendMessage(chattxt.value);
                 } else {
-                    Materialize.toast("You’re not logged in. Log in to send chats.", 5000)
+                    M.toast("You’re not logged in. Log in to send chats.", 3000);
                 }
                 chattxt.value = '';
             }
@@ -101,8 +100,8 @@
             });
         }
         function sendMessage(msg, from) {
-            var channel  = firebase.database().ref().child('chat/channels/' + tchat.currentChannel.id);
-            var messages = channel.child('msgs');
+            let channel  = firebase.database().ref().child('chat/channels/' + tchat.currentChannel.id);
+            let messages = channel.child('msgs');
             var meta = {
                     edited: false,
                     from: firebase.auth().currentUser.uid,
@@ -110,20 +109,24 @@
                     timestamp: Number(Date.now())
                 };
             messages.push().set(meta);
-            updateScroll()
+            updateScroll();
         }
         function messageToString(data) {
-            // var url = /[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-            // var em  = /\b_(\S[\s\S]*?)_\b/gi;
-            // var bold = /(?:^| +)\*{1}(\S[\s\S]*?)\*{1}(?: +|$)/gi;
+            //! Regular expressions
+            var url = /[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            var em  = /\b_(\S[\s\S]*?)_\b/gi;
+            var bold = /\*\b(\S[\s\S]*?)\b\*/gi;
 
             //! Keep raw messsage for notification
             var raw = data.msg;
 
+            //! User reference for later
+            var users = firebase.database().ref('/users/' + data.from);
+
             //! HTML escape message
             data.msg = escapeHTML(data.msg);
             //! Link module
-            data.msg = data.msg.replace(/[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, function (str) {
+            data.msg = data.msg.replace(url, function (str) {
                 var a = document.createElement('a'),
                     h = Boolean(str.startsWith('http://') || str.startsWith('https://'));
                 h ? a.href = str : a.href = '//' + str;
@@ -132,29 +135,36 @@
                 return a.outerHTML;
             });
             //! Bold module
-            data.msg = data.msg.replace(/(?:^| +)\*{1}(\S[\s\S]*?)\*{1}(?: +|$)/gi, function (str, s1) {
+            data.msg = data.msg.replace(bold, function (str, s1) {
                 var strong = document.createElement('strong');
                 strong.innerHTML = s1;
                 return strong.outerHTML;
-            })
+            });
             //! Em module
-            data.msg = data.msg.replace(/\b_(\S[\s\S]*?)_\b/gi, function (str, s1) {
+            data.msg = data.msg.replace(em, function (str, s1) {
                 var em = document.createElement('em');
                 em.innerHTML = s1;
                 return em.outerHTML;
             });
 
             //! String constructor
-            return firebase.database().ref('/users/' + data.from).once('value').then(function(snapshot) {
-                var user = snapshot.val();
-                return [user.username, data.msg, user, data];
+            return users.once('value').then(function (snapshot) {
+                var u = snapshot.val();
+                var a = {
+                    name: u.username,
+                    msg : data.msg,
+                    user: u,
+                    data: data,
+                    raw : raw
+                }
+                return a;
             }).then(function (a) {
-                var notOldMessage = (Number(a[3].timestamp) > Number(tchat.loadedTime));
+                var notOldMessage = (Number(a.data.timestamp) > Number(tchat.loadedTime));
                 if (!document.hasFocus() && tchat.notifs === true && notOldMessage) {
                     navigator.serviceWorker.ready.then(function (reg) {
-                        reg.showNotification(a[0] || 'New message', {
-                            body: a[1],
-                            icon: a[2].photo,
+                        reg.showNotification(a.name || 'New message', {
+                            body: raw,
+                            icon: a.user.photo,
                             badge: 'https://benji.pw/assets/icons/t.png',
                             vibrate: [100,150,100],
                             data: { id: 'tchat', url: 'https://benji.pw/tchat/' }
@@ -166,9 +176,7 @@
                         });
                     });
                 }
-                return a;
-            }).then(function (a) {
-                return '' + a[0] + ': ' + a[1];
+                return String(a.name + ': ' + a.msg);
             });
         }
         function updateScroll() {
@@ -182,6 +190,6 @@
                 onShow: updateScroll
             });
         });
-    }
+    };
     tchat.channel('global', false);
-}());
+}(jQuery, Materialize));

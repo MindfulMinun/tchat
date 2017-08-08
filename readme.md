@@ -1,8 +1,6 @@
 # tchat
-[A chat app running on Firebase.][tchat]
+[A simple messaging web app running on Firebase.][tchat]
 
-Tchat supports creating accounts and setting your display name to personalize your own tchatting identity.
-[Start tchatting!][tchat]
-
+Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and [start tchatting!][tchat]
 
 [tchat]: https://benji.pw/tchat

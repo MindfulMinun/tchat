@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">
         <link rel="stylesheet" href="{{ site.root }}/src/styles/master.css?{{ site.v }}">
-        <!-- <link rel="stylesheet" href="/styles/master.testing.css"> -->
+        <!-- <link rel="stylesheet" href="./src/styles/master.testing.css"> -->
     </head>
     <body class="body">
 
@@ -41,8 +41,8 @@
         <div id="appContainer" class="hide">
             <div class="">
                 <ul class="tabs hide">
-                    <li class="tab"><a class="active" href="#account">View Account</a></li>
-                    <li class="tab"><a href="#tchat">tchat</a></li>
+                    <li class="tab"><a href="#account">View Account</a></li>
+                    <li class="tab"><a class="active" href="#tchat">tchat</a></li>
                     <li class="tab"><a href="#about">About</a></li>
                     <!-- <li class="tab"><a href="#page4">Test 4</a></li> -->
                 </ul>
@@ -207,19 +207,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
     <script src="./src/js/auth.js?{{ site.v }}" defer></script>
     <script src="./src/js/account.js?{{ site.v }}" defer></script>
-    <script src="./src/js/tchat.js?{{ site.v }}" defer></script>
+    <script src="./src/js/tchat.min.js?{{ site.v }}" defer></script>
     <script src="./src/js/a11y.js?{{ site.v }}" defer></script>
     <script src="./src/js/inert.min.js" defer></script>
     <script type="text/javascript">
-        //! Commit data
-        $.getJSON("https://api.github.com/repos/MindfulMinun/tchat/commits", function(data) {
-            //! Latest commit data
-            //! XXX: Maybe remove commit message?
+    (function($, _) {
+        'use strict';
+        $.getJSON('https://api.github.com/repos/MindfulMinun/tchat/commits', function (data) {
+            //! Get latest commit info
+            //! XXX: Maybe remove latest commit message?
             $('.commit.user').text(data[0].commit.committer.name);
             $('.commit.message').text(data[0].commit.message);
             $('.commit.time').text(
-                 new Date(data[0].commit.committer.date).toLocaleString()
-            );
+                new Date(data[0].commit.committer.date).toLocaleString()
+            )
         });
         //! ServiceWorker registration
         if ('serviceWorker' in navigator) {
@@ -228,7 +229,7 @@
                 console.log('SW registered. Scope: ' + registration.scope);
             }, err => {
                 console.warn('ಠ_ಠ SW registration failed: ' + err)
-            })
+            });
         }
         //! UI
         $('#aria-side-nav-btn').sideNav({
@@ -260,7 +261,7 @@
                 s.value = '';
             }
         });
-        $(document).ready(function () {
+        $(function () {
             //! XXX: FIXME: Listen until *all* the assets are ready, not just `index`
             $('.modal').modal({
                 dismissable: true,
@@ -279,5 +280,6 @@
                 }
             });
         });
+    }(jQuery));
     </script>
 </html>

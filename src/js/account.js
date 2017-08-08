@@ -19,6 +19,14 @@
     auth.onAuthStateChanged(function (user) {
         updateUI();
         updateUserDB(user);
+        if (user) {
+            Materialize.toast('Logged in as ' + user.displayName, 3000);
+        } else {
+            $(function () {
+                $('ul.tabs').tabs('select_tab', 'account');
+            })
+            console.log('Logged out or not logged in');
+        }
     });
     editAccount.addEventListener('click', function () {
         editAccount.classList.add('hide');
