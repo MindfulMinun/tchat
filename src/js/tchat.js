@@ -134,17 +134,17 @@
                 a.target = '_blank';
                 return a.outerHTML;
             });
-            //! Bold module
-            data.msg = data.msg.replace(bold, function (str, s1) {
-                var strong = document.createElement('strong');
-                strong.innerHTML = s1;
-                return strong.outerHTML;
-            });
             //! Em module
             data.msg = data.msg.replace(em, function (str, s1) {
                 var em = document.createElement('em');
                 em.innerHTML = s1;
                 return em.outerHTML;
+            });
+            //! Bold module
+            data.msg = data.msg.replace(bold, function (str, s1) {
+                var strong = document.createElement('strong');
+                strong.innerHTML = s1;
+                return strong.outerHTML;
             });
 
             //! String constructor
