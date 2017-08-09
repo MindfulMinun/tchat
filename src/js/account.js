@@ -53,6 +53,7 @@
             displayName.disabled = true;
             displayImg.disabled = true;
             updateUI();
+            updateUserDB(user);
             Materialize.toast('Settings saved successfully.', 5000);
         }, function(error) {
             Materialize.toast('Error: ' + error.message, 5000);
