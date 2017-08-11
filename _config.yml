@@ -1,6 +1,6 @@
 icon: 'https://benji.pw/assets/icons/t.png'
-version: 'Public Beta 1.0.9'
-v: 'v=b1.0.9' # V is for "versioning" assets with query strings
+version: 'Public Beta 1.0.10'
+v: 'v=b1.0.10' # V is for "versioning" assets with query strings
 
 # Root must be followed by a slash `/`
 root: 'https://benji.pw/tchat'
