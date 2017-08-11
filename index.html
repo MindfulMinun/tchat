@@ -5,10 +5,17 @@
     <head>
         <meta charset="utf-8">
         <title>tchat</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="{{ site.accent }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="og:title" content="tchat">
+        <meta name="og:description" content="Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and start tchatting!">
+        <meta name="description" content="Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and start tchatting!">
+        <meta name="og:url" content="https://benji.pw/tchat/">
+        <meta name="twitter:site" content="@MindfulMinun">
+
         <link rel="shortcut icon" href="{{ site.icon }}">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i|Roboto+Mono:300">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">
         <link rel="stylesheet" href="{{ site.root }}/src/styles/master.css?{{ site.v }}">
         <!-- <link rel="stylesheet" href="./src/styles/master.testing.css"> -->
@@ -44,7 +51,9 @@
                     <li class="tab"><a href="#account">View Account</a></li>
                     <li class="tab"><a class="active" href="#tchat">tchat</a></li>
                     <li class="tab"><a href="#about">About</a></li>
-                    <!-- <li class="tab"><a href="#page4">Test 4</a></li> -->
+                    <li class="tab"><a href="#dm">Direct Messages</a></li>
+                    <li class="tab"><a href="#u">Users</a></li>
+                    <!-- <li class="tab"><a href="#page">Page</a></li> -->
                 </ul>
             </div>
             <div id="account" class="container">
@@ -61,10 +70,15 @@
                                 <input type="password" placeholder="Password" id="password" autocomplete="off">
                             </div>
                         </div>
-                        <div class="col s12">
-                            <button id="login" class="btn waves-effect">Log in</button>
-                            <button id="googleSignIn" class="btn alt-btn waves-effect">Sign in with Google</button>
-                            <button id="signUp" class="btn alt-btn waves-effect">Sign up</button>
+                        <div class="row">
+                            <div class="center">
+                                <button id="login" class="btn btn-width waves-effect">Log in</button>
+                                <button id="signUp" class="btn btn-width waves-effect">Sign up</button>
+                            </div>
+                            <div class="center">
+                                <button id="googleSignIn" class="btn btn-width alt-btn waves-effect">Sign in with Google</button>
+                                <button id="twitterSignIn" class="btn btn-width alt-btn waves-effect">Sign in with Twitter</button>
+                            </div>
                         </div>
                     </div>
                     <div id="accountInfo" class="hide">
@@ -87,6 +101,28 @@
                                         id="discardAccountChanges">Discard Account Changes</button>
                                     <button class="btn alt-btn waves-effect hide"
                                         id="saveAccount">Save Account Settings</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section">
+                            <h4>Manage Sign-in flow</h4>
+                            <div class="row">
+                                <div class="input-field col s12 m6">
+                                  <select id="signInProvSelect">
+                                    <option value="" disabled selected>Choose a provider</option>
+                                    <option value="0">Google</option>
+                                    <option value="1">Twitter</option>
+                                    <!-- <option value="3">Option 3</option> -->
+                                  </select>
+                                  <label>Sign in provider</label>
+                                </div>
+                                <div class="col s12 m6">
+                                    <button class="btn waves-effect" id="addSignInProv">
+                                        Add Sign-in provider
+                                    </button>
+                                    <button class="btn waves-effect" id="removeSignInProv">
+                                        Unlink Sign-in provider
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -127,6 +163,7 @@
                 </div>
             </div>
             <div id="about" class="container">
+                <!-- About section -->
                 <section class="section flow-text">
                 <h3>About</h3>
                 <p>
@@ -147,7 +184,36 @@
                 </ul>
                 </section>
             </div>
-            <!-- <div id="page4" class="container">Test 4</div> -->
+            <div id="dm" class="container">
+                <!-- DMs section -->
+                <section class="section">
+                    <h3>Send a Direct Message</h3>
+                    <p class="flow-text">My user ID is <code class="uid">&hellip;</code></p>
+                    <div class="row">
+                        <div class="col s12 input-field">
+                            <input type="text" placeholder="ID">
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div id="u" class="container">
+                <section class="section">
+                    <h3>Users</h3>
+                    <p class="flow-text">
+                        View a user profile.
+                        <span>Your user ID is <code class="uid">&hellip;</code></span>
+                    </p>
+                    <div class="row">
+                        <div class="col s12 input-field">
+                            <input type="text" placeholder="Enter a User ID">
+                            <button class="btn waves-effect waves-light">Search</button>
+                        </div>
+                    </div>
+                </section>
+                <section class="section user-section">
+                </section>
+            </div>
+            <!-- <div id="page" class="container">Page content</div> -->
         </div>
 
         <aside id="sideNavWrapper" inert>
@@ -167,6 +233,8 @@
                 <li><a class="subheader" href="#">Navigation</a></li>
                 <li><a class="waves-effect tlink" href="#account">View Account</a></li>
                 <li><a class="waves-effect tlink" href="#tchat">tchat</a></li>
+                <!-- <li><a class="waves-effect tlink" href="#dm">DMs</a></li> -->
+                <li><a class="waves-effect tlink" href="#u">Users</a></li>
                 <li><a class="waves-effect tlink" href="#about">About</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="subheader" href="#">External Links</a></li>
@@ -208,15 +276,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
     <script src="./src/js/auth.js?{{ site.v }}" defer></script>
     <script src="./src/js/account.js?{{ site.v }}" defer></script>
-    <script src="./src/js/tchat.min.js?{{ site.v }}" defer></script>
+    <script src="./src/js/tchat.js?{{ site.v }}" defer></script>
+    <script src="./src/js/dm.js?{{ site.v }}" defer></script>
     <script src="./src/js/a11y.js?{{ site.v }}" defer></script>
+    <script src="./src/js/users.js?{{ site.v }}" defer></script>
     <script src="./src/js/inert.min.js" defer></script>
     <script type="text/javascript">
     (function($, _) {
         'use strict';
+        //! Get latest commit info
         $.getJSON('https://api.github.com/repos/MindfulMinun/tchat/commits', function (data) {
-            //! Get latest commit info
-            //! XXX: Maybe remove latest commit message?
             $('.commit.user').text(data[0].commit.committer.name);
             $('.commit.message').text(data[0].commit.message);
             $('.commit.time').text(
@@ -245,7 +314,6 @@
         });
         $('a.tlink').on('click', function (e) {
             $('ul.tabs').tabs('select_tab', this.hash.slice(1));
-            e.preventDefault();
         });
         $('#switchChannelInput').on('keypress', function (e) {
             if ((e.which === 13 || e.keyCode === 13) && this.value.length > 1) {
@@ -264,6 +332,14 @@
         });
         $(function () {
             //! XXX: FIXME: Listen until *all* the assets are ready, not just `index`
+            //! If DMs, open DM window
+            // if (window.location.hash.startsWith('#dm')) {
+            //     $('ul.tabs').tabs('select_tab', 'dm');
+            //     //! DM URLs should be formatted like this:
+            //     //! 'http://localhost:1337/#dm/uID'
+            //     //! where uID is the other person's user id
+            // }
+            $('select').material_select();
             $('.modal').modal({
                 dismissable: true,
                 inDuration: 250,

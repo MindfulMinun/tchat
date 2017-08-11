@@ -115,14 +115,17 @@
             var usersDB = firebase.database().ref().child('users'),
                 uid     = user.uid,
                 me      = usersDB.child(uid);
-            me.set({
-                username: user.displayName,
-                photo   : user.photoURL,
-                lastUpdated: Number(Date.now())
+            me.once('value').then(function (snapshot) {
+                var temp = snapshot.val();
+                me.set({
+                    username: user.displayName || temp.username,
+                    photo   : user.photoURL    || temp.photo,
+                    lastUpdated: Number(Date.now()),
+                    verified: temp.verified || false
+                });
             });
             // console.log('Updated user db');
         }
-
     }
 
 }());

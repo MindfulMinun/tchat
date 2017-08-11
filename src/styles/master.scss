@@ -47,6 +47,11 @@ html, body.body {
 .btn {
     color: white !important;
     background-color: $accent !important;
+    margin-bottom: 0.2em;
+}
+.btn-width {
+    width: 250px;
+    max-width: 100%;
 }
 .btn-flat {
     color: white;
@@ -100,6 +105,18 @@ html, body.body {
 .input-field .prefix.active {
     color: $accent !important;
 }
+/* Code for that one part */
+pre, code {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #000;
+    color: #fff;
+}
+pre {
+    margin: 1rem 0;
+    padding: 1rem;
+    font-size: 1rem;
+    overflow-x: auto;
+}
 .modal {
     transform: scaleX(1) !important;
     color: #212121;
@@ -146,6 +163,10 @@ html, body.body {
         }
     }
 }
+#u .row.valign-wrapper {
+    margin-bottom: 0;
+}
+
 #toast-container {
   @media #{$small-and-down} {
     min-width: 100%;
@@ -183,6 +204,7 @@ html, body.body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 100;
 
     .btn, .btn-flat {
         color: $accent;

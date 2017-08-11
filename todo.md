@@ -6,7 +6,6 @@
 - [x] Create Authentication
     - [x] Sign in with email
     - [x] Sign in with Google
-    - [ ] Sign in anonymously.
     - [x] Anon’s would still be able to read messages
 - [x] Create global messaging
 - [ ] Create image uploader
@@ -16,7 +15,6 @@
 - `index.html`
     - [ ] 115: Change ID `list` to something more descriptive
     - [ ] *FIXME*, 215: Listen until *all* the assets are ready, not just `index`
-    - [ ] 193: Maybe remove commit message?
 - `sw.js`
     - [ ] Offline? Nahh
     - [ ] Implement push notifications
@@ -31,13 +29,10 @@
             - [ ] User-created channels
             - [x] Switching back and forth between channels
         - [ ] Pseudo-Markdown??
+            - [x] Links
             - [x] Bold
             - [x] Italics
             - [ ] Strikethrough
             - [x] Links
             - [ ] Images
 - `master.scss`
-    - [x] Toasts
-        - [x] Change bg to white
-        - [x] Change to black text
-        - [x] Make links blue
