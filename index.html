@@ -1,7 +1,7 @@
 ---
 ---
 <!DOCTYPE html>
-<html>
+<html class="no-js">
     <head>
         <meta charset="utf-8">
         <title>tchat</title>
@@ -24,14 +24,14 @@
 
         <header>
             <button class="btn-flat btn-large nav-btn"
-                data-activates="slide-out" aria-label="Toggle Navigation Menu"
-                id="aria-side-nav-btn">
+                data-activates="slide-out" data-a11y="sideNavTrigger" aria-label="Toggle Navigation Menu">
                 <i class="material-icons">menu</i>
             </button>
         </header>
 
 
         <div class="absolute-center">
+            <!-- Spinner -->
             <div class="preloader-wrapper small active">
               <div class="spinner-layer spinner-blue-only">
                 <div class="circle-clipper left">
@@ -43,6 +43,20 @@
                 </div>
               </div>
             </div>
+            <!-- Redirect lame browsers to /lamebrowser/ bc they're lame -->
+            <script type="text/javascript">
+                if ('classList'        in document.createElement('div') &&
+                    'querySelector'    in document &&
+                    'addEventListener' in window &&
+                    Array.prototype.forEach) {
+                    document.documentElement.classList.remove('no-js');
+                } else {
+                    window.location.replace('/lamebrowser/');
+                }
+            </script>
+            <noscript>
+                <meta http-equiv="refresh" content="0;url=/lamebrowser/">
+            </noscript>
         </div>
 
         <div id="appContainer" class="hide">
@@ -60,47 +74,47 @@
                 <!-- Account section -->
                 <section class="section">
                     <h3>Account</h3>
-                    <p class="flow-text" id="accountWelcome">Retrieving data...</p>
-                    <div id="loginFields">
+                    <p class="flow-text welcome">Retrieving data...</p>
+                    <div id="login">
                         <div class="row">
                             <div class="input-field col s12 m6">
-                                <input type="email" placeholder="Email" id="email" autocomplete="off">
+                                <input type="email" placeholder="Email" autocomplete="off">
                             </div>
                             <div class="input-field col s12 m6">
-                                <input type="password" placeholder="Password" id="password" autocomplete="off">
+                                <input type="password" placeholder="Password" autocomplete="off">
                             </div>
                         </div>
                         <div class="row">
                             <div class="center">
-                                <button id="login" class="btn btn-width waves-effect">Log in</button>
-                                <button id="signUp" class="btn btn-width waves-effect">Sign up</button>
+                                <button data-login="loginWithEmail" class="btn btn-width waves-effect">Log in</button>
+                                <button data-login="signUpWithEmail" class="btn btn-width waves-effect">Sign up</button>
                             </div>
                             <div class="center">
-                                <button id="googleSignIn" class="btn btn-width alt-btn waves-effect">Sign in with Google</button>
-                                <button id="twitterSignIn" class="btn btn-width alt-btn waves-effect">Sign in with Twitter</button>
+                                <button data-login="google" class="btn btn-width alt-btn waves-effect">Sign in with Google</button>
+                                <button data-login="twitter" class="btn btn-width alt-btn waves-effect">Sign in with Twitter</button>
                             </div>
                         </div>
                     </div>
-                    <div id="accountInfo" class="hide">
+                    <div id="accountInfo">
                         <button id="signOut" class="btn">Log out</button>
                         <div class="section">
                             <h4>Edit Account</h4>
                             <div class="row">
                                 <div class="input-field col s12 m6">
-                                    <input id="displayName" type="text" disabled>
+                                    <input id="accountInfo-displayName" type="text" disabled>
                                     <label for="displayName">Display Name</label>
                                 </div>
                                 <div class="input-field col s12 m6">
-                                    <input id="displayImg" type="text" disabled>
+                                    <input id="accountInfo-displayImg" type="text" disabled>
                                     <label for="displayImg">Photo URL</label>
                                 </div>
                                 <div class="col s12">
                                     <button class="btn alt-btn waves-effect"
-                                        id="editAccount">Change Account Settings</button>
+                                        data-account="edit">Change Account Settings</button>
                                     <button class="btn waves-effect hide"
-                                        id="discardAccountChanges">Discard Account Changes</button>
+                                        data-account="discard">Discard Account Changes</button>
                                     <button class="btn alt-btn waves-effect hide"
-                                        id="saveAccount">Save Account Settings</button>
+                                        data-account="save">Save Account Settings</button>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +122,7 @@
                             <h4>Manage Sign-in flow</h4>
                             <div class="row">
                                 <div class="input-field col s12 m6">
-                                  <select id="signInProvSelect">
+                                  <select data-account="providerSelect">
                                     <option value="" disabled selected>Choose a provider</option>
                                     <option value="0">Google</option>
                                     <option value="1">Twitter</option>
@@ -117,10 +131,10 @@
                                   <label>Sign in provider</label>
                                 </div>
                                 <div class="col s12 m6">
-                                    <button class="btn waves-effect" id="addSignInProv">
+                                    <button class="btn waves-effect" data-account="linkProvider">
                                         Add Sign-in provider
                                     </button>
-                                    <button class="btn waves-effect" id="removeSignInProv">
+                                    <button class="btn waves-effect" data-account="unlinkProvider">
                                         Unlink Sign-in provider
                                     </button>
                                 </div>
@@ -134,13 +148,13 @@
                 <div class="chat-header z-depth-1">
                     <div class="container">
                         <h3>tchat</h3>
-                        <p class="left truncate">Current channel: <span id="chName"></span></p>
+                        <p class="left truncate">Current channel: <span data-tchat="chName"></span></p>
                         <div class="right">
                             <!-- <button class="waves-effect waves-light btn-tool">
                                 <i class="material-icons">settings</i>
                             </button> -->
-                            <button class="waves-effect waves-light btn-tool" data-target="switchChannel"
-                                id="aria-switchChannelsBtn">
+                            <button class="waves-effect waves-light btn-tool"
+                            data-target="switchChannel" data-a11y="switchChannelsBtn">
                                 <i class="material-icons" aria-label="Switch Channels">swap_horiz</i>
                             </button>
                         </div>
@@ -148,15 +162,13 @@
                 </div>
                 <div class="chat-container container">
                     <section class="section flow-text">
-                        <!-- TODO: Change this ID, not very descriptive -->
-                        <ul id="list" aria-live="polite">
-                        </ul>
+                        <ul data-tchat="messageContainer" aria-live="assertive"></ul>
                     </section>
                 </div>
                 <div class="chat-input z-depth-0">
                     <div class="container">
                         <div class="input-field">
-                            <input type="text" id="chatTxt">
+                            <input type="text" data-tchat="input">
                             <label for="chatTxt">Send something silly!</label>
                         </div>
                     </div>
@@ -216,7 +228,7 @@
             <!-- <div id="page" class="container">Page content</div> -->
         </div>
 
-        <aside id="sideNavWrapper" inert>
+        <aside data-a11y="sideNavWrapper" inert>
             <!-- Side Nav -->
             <ul id="slide-out" class="side-nav">
                 <li>
@@ -274,13 +286,14 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
-    <script src="./src/js/auth.js?{{ site.v }}" defer></script>
-    <script src="./src/js/account.js?{{ site.v }}" defer></script>
-    <script src="./src/js/tchat.min.js?{{ site.v }}" defer></script>
-    <script src="./src/js/dm.js?{{ site.v }}" defer></script>
-    <script src="./src/js/a11y.js?{{ site.v }}" defer></script>
-    <script src="./src/js/users.js?{{ site.v }}" defer></script>
-    <script src="./src/js/inert.min.js" defer></script>
+    <script src="./src/js/auth.js?{{ site.v }}" charset="utf-8" defer></script>
+    <script src="./src/js/account.js?{{ site.v }}" charset="utf-8" defer></script>
+    <!-- <script src="./src/js/tchat.js?{{ site.v }}" charset="utf-8" defer></script> -->
+    <script src="./src/js/tchat.min.js?{{ site.v }}" charset="utf-8" defer></script>
+    <script src="./src/js/dm.js?{{ site.v }}" charset="utf-8" defer></script>
+    <script src="./src/js/a11y.js?{{ site.v }}" charset="utf-8" defer></script>
+    <script src="./src/js/users.js?{{ site.v }}" charset="utf-8" defer></script>
+    <script src="./src/js/inert.min.js" charset="utf-8" defer></script>
     <script type="text/javascript">
     (function($, _) {
         'use strict';
@@ -296,13 +309,13 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js')
             .then(registration => {
-                console.log('SW registered. Scope: ' + registration.scope);
+                console.log('%cServiceWorker:', 'color:#00e676', 'Registered successfully. Scope: ' + registration.scope);
             }, err => {
-                console.warn('ಠ_ಠ SW registration failed: ' + err)
+                console.warn('%cServiceWorker:', 'color:#00e676', 'ಠ_ಠ Registration failed: ' + err)
             });
         }
         //! UI
-        $('#aria-side-nav-btn').sideNav({
+        $('[data-a11y="sideNavTrigger"]').sideNav({
             menuWidth: 300,
             edge: 'left',
             closeOnClick: true,

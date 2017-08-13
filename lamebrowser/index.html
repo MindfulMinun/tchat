@@ -1,0 +1,90 @@
+---
+---
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>Lame browser :P</title>
+        <meta name="theme-color" content="{{ site.accent }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex">
+
+        <!-- <meta name="og:title" content="tchat">
+        <meta name="og:description" content="Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and start tchatting!">
+        <meta name="description" content="Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and start tchatting!">
+        <meta name="og:url" content="https://benji.pw/tchat/">
+        <meta name="twitter:site" content="@MindfulMinun"> -->
+
+        <link rel="shortcut icon" href="{{ site.icon }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i|Roboto+Mono:300">
+        <link rel="stylesheet" href="../src/styles/txt.css">
+    </head>
+    <body class="semantic-body">
+        <main class="main">
+            <div class="container content">
+                <h1 class="thin">You have a lame browser.</h1>
+                <hr>
+                <p>If you landed on this page, it means you have a lame browser. :P</p>
+                <div class="hide-if-no-js">
+                    <p>
+                        It looks like your browser supports JavaScript, but it doesn’t use the latest technologies.
+                        Let’s run some tests.
+                    </p>
+                    <ul id="results">
+                        <li>Testing&hellip;</li>
+                    </ul>
+                    <p>
+                        <a href="http://outdatedbrowser.com/" target="_blank">Keep your browser up to date</a> in order to make use of the latest web technologies.
+                    </p>
+                </div>
+                <noscript>
+                    <blockquote>
+                        <em>“Why aren’t you using JavaScript?!”</em> &mdash;&nbsp;MindfulMinun
+                    </blockquote>
+                    <p>
+                        Your browser isn’t using JavaScript. Most modern browsers have that enabled,
+                        you probably just turned it off. Do us all a favor and <a href="http://www.enable-javascript.com/" target="_blank">turn it back on</a>.
+                        Furthermore, <a href="http://outdatedbrowser.com/" target="_blank">don’t forget to keep your browser up to date</a> in order to make use of the latest web technologies.
+                    </p>
+                </noscript>
+            </div>
+        </main>
+        <footer>
+            <div class="container">
+                <p class="right">
+                    <a href="https://benji.pw/tchat/">Return to tchat</a>
+                </p>
+            </div>
+        </footer>
+    </body>
+    <script type="text/javascript">
+        (function() {
+            'use strict';
+            //! If JavaScript is enabled, remove no-js class
+            document.documentElement.classList.remove('no-js');
+        }());
+        (function() {
+            //! Ok, the actual test.
+            'use strict';
+            var r = document.getElementById('results'),
+                cl = document.createElement('li'),
+                qs = document.createElement('li'),
+                ael = document.createElement('li'),
+                fe = document.createElement('li');
+            cl.innerHTML  = 'Supports <code>classList</code>: ';
+            qs.innerHTML  = 'Supports <code>querySelector</code>: ';
+            ael.innerHTML = 'Supports <code>addEventListener</code>: ';
+            fe.innerHTML  = 'Supports <code>Array.prototype.forEach</code>: ';
+            r.innerHTML   = '';
+
+            cl.innerHTML += ('classList' in document.createElement('div')) ? "Yes" : "No";
+            r.appendChild(cl);
+            qs.innerHTML += ('querySelector' in document) ? "Yes" : "No";
+            r.appendChild(qs);
+            ael.innerHTML += ('addEventListener' in window) ? "Yes" : "No";
+            r.appendChild(ael);
+            fe.innerHTML += (Array.prototype.forEach) ? "Yes" : "No";
+            r.appendChild(fe);
+        }());
+    </script>
+</html>

@@ -2,17 +2,18 @@
     'use strict';
     //! Account
 
-    var welcome = document.getElementById('accountWelcome'),
+    var account = document.getElementById('account'),
+        welcome = account.querySelector('.welcome'),
         sideNavName  = document.querySelector('#slide-out').querySelector('.name'),
         sideNavEmail = document.querySelector('#slide-out').querySelector('.email'),
         sideNavImg   = document.querySelector('#slide-out').querySelector('img'),
         auth = firebase.auth(),
         user = firebase.auth().currentUser,
-        displayName = document.getElementById('displayName'),
-        displayImg  = document.getElementById('displayImg'),
-        editAccount = document.getElementById('editAccount'),
-        saveAccount = document.getElementById('saveAccount'),
-        discardAccountChanges = document.getElementById('discardAccountChanges');
+        displayName = document.getElementById('accountInfo-displayName'),
+        displayImg  = document.getElementById('accountInfo-displayImg'),
+        editAccount = account.querySelector('[data-account="edit"]'),
+        saveAccount = account.querySelector('[data-account="save"]'),
+        discardChanges = account.querySelector('[data-account="discard"]');
 
 
     updateUI();
@@ -31,7 +32,7 @@
     editAccount.addEventListener('click', function () {
         editAccount.classList.add('hide');
         saveAccount.classList.remove('hide');
-        discardAccountChanges.classList.remove('hide');
+        discardChanges.classList.remove('hide');
 
         if (user) {
             displayName.value = user.displayName;
@@ -45,7 +46,7 @@
         //! TODO: Verify that displayImg is an actual image
         editAccount.classList.remove('hide');
         saveAccount.classList.add('hide');
-        discardAccountChanges.classList.add('hide');
+        discardChanges.classList.add('hide');
 
         saveSettings().then(function() {
             displayName.value = null;
@@ -59,10 +60,10 @@
             Materialize.toast('Error: ' + error.message, 5000);
         });
     });
-    discardAccountChanges.addEventListener('click', function () {
+    discardChanges.addEventListener('click', function () {
         editAccount.classList.remove('hide');
         saveAccount.classList.add('hide');
-        discardAccountChanges.classList.add('hide');
+        discardChanges.classList.add('hide');
 
         displayName.value = null;
         displayImg.value = null;
@@ -79,8 +80,8 @@
             sideNavName.innerText  = (user.displayName || 'Anonymous');
             sideNavEmail.innerText = (user.email || 'No email provided.');
             sideNavImg.src = user.photoURL || anonUserIcon;
-            $('#loginFields').addClass('hide');
-            $('#accountInfo').removeClass('hide');
+            //! Add logged-in class
+            document.documentElement.classList.add('logged-in');
 
             displayName.value = user.displayName;
             displayImg.value = user.photoURL;
@@ -92,8 +93,8 @@
             sideNavName.innerText = 'Not logged in.';
             sideNavEmail.innerText = null;
             sideNavImg.src = anonUserIcon;
-            $('#loginFields').removeClass('hide');
-            $('#accountInfo').addClass('hide');
+            //! Removed logged-in class
+            document.documentElement.classList.remove('logged-in');
 
             displayName.value = null;
             displayImg.value = null;

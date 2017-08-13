@@ -1,28 +1,31 @@
 (function() {
+    'use strict';
     const
         auth     = firebase.auth(),
         user     = firebase.auth().currentUser,
+        accountSection = document.getElementById('account'),
+        login    = accountSection.querySelector('#login'),
         //! Old-fashioned sign in
-        emailTxt = document.getElementById('email'),
-        pwordTxt = document.getElementById('password'),
-        login    = document.getElementById('login'),
-        signUp   = document.getElementById('signUp'),
+        emailTxt = login.querySelector('input[type="email"]'),
+        pwordTxt = login.querySelector('input[type="password"]'),
+        loginWithEmail = login.querySelector('button[data-login="loginWithEmail"]'),
+        signUpWithEmail = login.querySelector('button[data-login="signUpWithEmail"]'),
         //! Sign in buttons
-        googleSignIn   = document.getElementById('googleSignIn'),
-        twitterSignIn  = document.getElementById('twitterSignIn'),
-        signOut  = document.getElementById('signOut'),
+        googleSignIn   = login.querySelector('button[data-login="google"]'),
+        twitterSignIn  = login.querySelector('button[data-login="twitter"]'),
+        signOut  = account.querySelector('#signOut'),
         //! Sign in providers
-        addSignInProv = document.getElementById('addSignInProv'),
-        removeSignInProv = document.getElementById('removeSignInProv')
-        signInProvSelect = document.getElementById('signInProvSelect'),
+        signInProvSelect = account.querySelector('[data-account="providerSelect"]'),
+        removeSignInProv = account.querySelector('[data-account="unlinkProvider"]'),
+        addSignInProv = account.querySelector('[data-account="linkProvider"]'),
         signInProviders = [
             new firebase.auth.GoogleAuthProvider(),
             new firebase.auth.TwitterAuthProvider()
             // new firebase.auth.FacebookAuthProvider(),
-            // new firebase.auth.GithubAuthProvider()1
+            // new firebase.auth.GithubAuthProvider()
         ];
 
-    login.addEventListener('click', function () {
+    loginWithEmail.addEventListener('click', function () {
         var email = emailTxt.value;
         var pword = pwordTxt.value;
         auth.signInWithEmailAndPassword(email, pword).then(function () {
@@ -93,7 +96,7 @@
             Materialize.toast('Please select a provider.', 3000);
         }
     });
-    signUp.addEventListener('click', function () {
+    signUpWithEmail.addEventListener('click', function () {
         //! TODO: Verify real email
         var email = emailTxt.value;
         var pword = pwordTxt.value;

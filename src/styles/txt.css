@@ -7,11 +7,11 @@
     font-size: 16px;
     font-family: "Roboto", Helvetica, Arial, sans-serif;
     /*--accent: #69f0ae;*/
-    --accent: #448aff;
+    /*--accent: #448aff;
     --against-accent: #fafafa;
     --small: 640px;
     --color-fade: rgba(255,255,255,0.12);
-    --color-alt:  rgba(255,255,255,0.52);
+    --color-alt:  rgba(255,255,255,0.52);*/
 }
 body {
     margin: 0;
@@ -30,7 +30,7 @@ body {
 .container.content {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 @media (min-width: 448px) {
     .container {
@@ -54,12 +54,12 @@ h5, .h5 {font-size: 2.25rem;}
 h6, .h6 {font-size: 2rem;}
 
 /* Text */
-.content p {
-    font-size: 1.3rem;
+.content p, .txt {
+    font-size: 1.2rem;
     line-height: 1.5;
 }
 .content a {
-    color: var(--accent);
+    color: #448aff;
     text-decoration: none;
 }
 .content em,
@@ -69,16 +69,16 @@ h6, .h6 {font-size: 2rem;}
 .thin {font-weight: 100;}
 .light {font-weight: 300;}
 .alt {
-    color: var(--color-alt);
+    color: rgba(255,255,255,0.52);
 }
 .content hr {
-    border-color: var(--color-fade);
+    border-color: rgba(255,255,255,0.12);
 }
 .content blockquote {
     margin: 2rem 1rem;
-    border-left: 0.5rem solid var(--accent);
+    border-left: 0.25rem solid #448aff;
     padding: 0 1rem;
-    font-size: 1.75rem;
+    font-size: 1.25em;
 }
 /* Code */
 .content pre, .content code {
@@ -94,6 +94,7 @@ h6, .h6 {font-size: 2rem;}
 }
 .content code {
     font-size: 1em;
+    padding: 0.12rem;
 }
 
 /* Helpers */
@@ -107,6 +108,10 @@ h6, .h6 {font-size: 2rem;}
 .hidden {
     display: none !important;
 }
+.no-js .hide-if-no-js {
+    display: none;
+}
+
 /* Visually hidden, yet available to screen readers*/
 .visuallyhidden {
     border: 0;
@@ -154,10 +159,10 @@ h6, .h6 {font-size: 2rem;}
 }
 .content thead {
     text-align: left;
-    border-bottom: 2px solid var(--color-fade);
+    border-bottom: 2px solid rgba(255,255,255,0.12);
 }
 .content tfoot {
-    border-top: 2px solid var(--color-fade);
+    border-top: 2px solid rgba(255,255,255,0.12);
 }
 .content th, .content td {
     padding: 0.5rem;
@@ -173,9 +178,12 @@ h6, .h6 {font-size: 2rem;}
     flex: 1;
 }
 footer {
-    background-color: var(--accent);
+    background-color: #448aff;
 }
 footer a {
-    color: var(--against-accent);
+    color: #fafafa;
     text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
 }

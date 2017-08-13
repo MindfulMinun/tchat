@@ -83,6 +83,20 @@ html, body.body {
     color: $accent !important;
     background-color: white !important;
 }
+
+//! Add logged-in states
+#login { display: block; }
+#accountInfo { display: none; }
+
+.logged-in {
+    #login {
+        display: none;
+    }
+    #accountInfo {
+        display: block;
+    }
+}
+
 //! Materialize input fields
 /* label color */
 .input-field label {

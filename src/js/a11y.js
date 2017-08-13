@@ -4,9 +4,9 @@
 
     let previousActiveElement;
     const
-        switchChannelsBtn = document.getElementById('aria-switchChannelsBtn'),
-        sideNavBtn        = document.getElementById('aria-side-nav-btn'),
-        sideNav           = document.getElementById('sideNavWrapper');
+        switchChannelsBtn = document.querySelector('[data-a11y="switchChannelsBtn"]'),
+        sideNavBtn        = document.querySelector('[data-a11y="sideNavTrigger"]'),
+        sideNav           = document.querySelector('[data-a11y="sideNavWrapper"]');
 
     a11y.sideNav = function (action) {
         if (action === 'open') {
@@ -47,6 +47,6 @@
         a11y.sideNav('open');
     });
     function log(str) {
-        console.log('%ca11y:', 'color:#448aff', str);
+        console.log('%ca11y:', 'color:#00e676', str);
     }
 }());

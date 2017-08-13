@@ -10,9 +10,10 @@
         //! Variables & stuff
         tchat.currentChannel.id = chID.toLowerCase();
         var
-            list     = document.getElementById('list'),
-            chattxt  = document.getElementById('chatTxt'),
-            channelDisplay = document.getElementById('chName'),
+            section  = document.getElementById('tchat'),
+            messageContainer = section.querySelector('[data-tchat="messageContainer"]'),
+            inputBox         = section.querySelector('input[data-tchat="input"]'),
+            channelName      = section.querySelector('[data-tchat="chName"]'),
             channel  = firebase.database().ref().child('chat/channels/' + tchat.currentChannel.id),
             messages = channel.child('msgs').orderByKey();
 
@@ -26,8 +27,8 @@
 
         //! Before appending messages, clear current ones in case of a channel change.
         //! Furthermore, clear all event listeners
-        list.innerHTML = '';
-        chattxt.removeEventListener('keypress', inputListener);
+        messageContainer.innerHTML = '';
+        inputBox.removeEventListener('keypress', inputListener);
         channel.off('value');
         messages.off('child_added');
         messages.off('child_changed');
@@ -38,7 +39,7 @@
         channel.on('value', function (snapshot) {
             var data = snapshot.val();
             try {
-                channelDisplay.innerText = data.meta.name;
+                channelName.innerText = data.meta.name;
             } catch (e) {
                 M.toast("That’s not a valid channel. Switching to global&hellip;", 3000);
                 tchat.channel('global');
@@ -49,7 +50,7 @@
             const li = document.createElement('li'),
                 data = snapshot.val();
             li.id = "msg" + snapshot.key;
-            list.appendChild(li);
+            messageContainer.appendChild(li);
             messageToString(data)
             .then(function (string) {
                 li.innerHTML = string;
@@ -72,18 +73,18 @@
         });
 
         //! Input handler
-        chattxt.addEventListener('keypress', inputListener);
+        inputBox.addEventListener('keypress', inputListener);
 
         function inputListener(e) {
-            if ((e.which === 13 || e.keyCode === 13) && chattxt.value !== '') {
+            if ((e.which === 13 || e.keyCode === 13) && inputBox.value !== '') {
                 //! XXX: Add character limit
                 //! XXX: Add message throttling.
                 if (firebase.auth().currentUser) {
-                    sendMessage(chattxt.value);
+                    sendMessage(inputBox.value);
                 } else {
                     M.toast("You’re not logged in. Log in to send chats.", 3000);
                 }
-                chattxt.value = '';
+                inputBox.value = '';
             }
         }
 
@@ -113,7 +114,7 @@
         }
         function messageToString(data) {
             //! Regular expressions
-            var url = /[-a-zA-Z0-9@:%_\+.~#?&/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            var url = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var em  = /\b_(\S[\s\S]*?)_\b/gi;
             var bold = /\*\b(\S[\s\S]*?)\b\*/gi;
 
@@ -129,7 +130,7 @@
             data.msg = data.msg.replace(url, function (str) {
                 var a = document.createElement('a'),
                     h = Boolean(str.startsWith('http://') || str.startsWith('https://'));
-                h ? a.href = str : a.href = '//' + str;
+                a.href = h ? str : '//' + str;
                 a.innerHTML = str;
                 a.target = '_blank';
                 return a.outerHTML;
@@ -156,7 +157,7 @@
                     user: u,
                     data: data,
                     raw : raw
-                }
+                };
                 return a;
             }).then(function (a) {
                 var notOldMessage = (Number(a.data.timestamp) > Number(tchat.loadedTime));
