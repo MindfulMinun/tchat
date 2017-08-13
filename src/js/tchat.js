@@ -114,7 +114,7 @@
         }
         function messageToString(data) {
             //! Regular expressions
-            var url = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            var url = /[-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?/gi;
             var em  = /\b_(\S[\s\S]*?)_\b/gi;
             var bold = /\*\b(\S[\s\S]*?)\b\*/gi;
 
@@ -130,7 +130,7 @@
             data.msg = data.msg.replace(url, function (str) {
                 var a = document.createElement('a'),
                     h = Boolean(str.startsWith('http://') || str.startsWith('https://'));
-                a.href = h ? str : '//' + str;
+                a.href = h ? str : '\/\/' /* '//' */ + str;
                 a.innerHTML = str;
                 a.target = '_blank';
                 return a.outerHTML;
