@@ -23,7 +23,7 @@
 
         <link rel="shortcut icon" href="{{ site.icon }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons|Roboto:200,200i,300,300i,400,400i,500,500i|Roboto+Mono:300">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <link rel="stylesheet" href="{{ site.root }}/src/styles/master.css?{{ site.v }}">
         <!-- <link rel="stylesheet" href="./src/styles/master.testing.css"> -->
     </head>
@@ -100,6 +100,13 @@
                                 <button data-login="google" class="btn btn-width alt-btn waves-effect">Sign in with Google</button>
                                 <button data-login="twitter" class="btn btn-width alt-btn waves-effect">Sign in with Twitter</button>
                             </div>
+                            <p>
+                                <ul class="browser-default">
+                                    <li>
+                                        <a href="./manage-account/#reset-password">Forgot password?</a>
+                                    </li>
+                                </ul>
+                            </p>
                         </div>
                     </div>
                     <div id="accountInfo">
@@ -144,6 +151,9 @@
                                     <button class="btn waves-effect" data-account="unlinkProvider">
                                         Unlink Sign-in provider
                                     </button>
+                                </div>
+                                <div class="col s12">
+                                    <p class="right-align"><a href="./manage-account/">More account settings&hellip;</a></p>
                                 </div>
                             </div>
                         </div>
@@ -261,7 +271,7 @@
             </ul>
         </aside>
 
-        <aside id="switchChannel" class="modal" role="dialog"
+        <aside id="switchChannel" class="modal modal-fixed-footer" role="dialog"
             aria-labelledby="aria-switchChannel-header" inert>
             <div class="modal-content">
                 <h4 id="aria-switchChannel-header">Switch Channels</h4>
@@ -270,6 +280,17 @@
                     <input id="switchChannelInput" type="text" placeholder='Ex: "global"'>
                     <!-- <label for="switchChannelInput">Channel ID</label> -->
                 </div>
+                <p>
+                    Publicly available channels:
+                    <ul class="browser-default">
+                        <li>alt</li>
+                        <li>ask</li>
+                        <li>db</li>
+                        <li>global</li>
+                        <li>tchangelog</li>
+                    </ul>
+                    See <a href="https://benji.pw/blog/tchat/2017/08/09/tchat-faq/#i-want-to-create-a-channel-how-do-i-do-that">the FAQ</a> for more details.
+                </p>
             </div>
             <div class="modal-footer">
                 <button class="modal-action modal-close waves-effect btn-flat">Cancel</button>
@@ -292,7 +313,7 @@
         firebase.initializeApp(config);
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
     <!-- Development -->
     <!-- <script src="./src/js/auth.js?{{ site.v }}" charset="utf-8" defer></script>

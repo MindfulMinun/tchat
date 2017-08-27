@@ -1,0 +1,395 @@
+/* Feather */
+
+/*!
+ * Feather - A lightweight CSS boilerplate
+ * @license MIT License
+ * @copyright 2017 MindfulMinun
+**/
+
+/*
+ * List of all helper classes:
+ * .pad: Adds margin-top and margin-bottom
+ * .h1 - .h6: Changes font size as if it were header
+ * a.no-underline: Removes underline from anchor
+ * .thin: Thin font weight
+ * .light: Light font weight
+ * .normal-weight: Normal font weight
+ * .bold: Bold font weight
+ * .alt: Sets color to --color-alt
+ * .code: Styles element as if it were code
+ * .kbd: Styles element as if it were kbd
+ * .affix: Affixes to last non-statically positioned element
+ * .left / .right: Floats left / right
+ * .center: Centers element horizontally
+ * .txt-left, .txt-right, .txt-center, .txt-justify: Aligns text accordingly.
+ * .pad: Adds 1rem of padding-top / bottom
+ * .side-pad: Adds 1rem of padding-left / right
+ * .no-padding : Removes padding from element
+ * .no-margin  : Removes margin from element
+ * .no-space   : Removes padding and margin from element
+ * .hide: display: none;
+ * .visuallyhidden: Hides on screen but not to screen readers
+ * .invisible: Hides content but keeps spacing
+**/
+
+//! Colors & accent
+$background-color: #1e1e1e;
+$text-color: #fafafa;
+$accent    : #448aff;
+$against-a : #fafafa;
+$color-fade: rgba(255,255,255,0.12);
+$color-alt : rgba(255,255,255,0.52);
+
+//! Fonts & stuff
+$font-fam : "Roboto", Helvetica, Arial, sans-serif;
+$add-links-after-headers: true;
+$icon-font: "Material Icons";
+$link     : "link";
+
+//! Screen sizes
+$small : 35.5rem;
+$medium: 48rem;
+$large : 80rem;
+
+$large-and-up   : "only screen and (min-width: #{$medium})" !default;
+$medium-and-up  : "only screen and (min-width: #{$small})"  !default;
+$small-and-up   : "only screen" !default;
+
+$large-and-down : "only screen and (max-width : #{$large}  - 1)" !default;
+$medium-and-down: "only screen and (max-width : #{$medium} - 1)" !default;
+$small-and-down : "only screen and (max-width : #{$small}  - 1)" !default;
+
+$medium-only    : "only screen and (min-width : #{$small}) and (max-width : #{$medium} -1)" !default;
+
+//! Root styling
+:root {
+    background-color: $background-color;
+    color: $text-color;
+    font-size: 16px;
+    font-family: $font-fam;
+}
+
+//! Page-wide styles
+*,
+*::before,
+*::after, {
+    box-sizing: border-box;
+    margin: 0;
+}
+body {
+    margin: 0;
+}
+/* Container */
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: $medium;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    font-weight: 300;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+@media #{$medium-and-up} {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+/* Headings & Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+    line-height: normal;
+    margin: 0.75em 0 0.5em 0;
+    page-break-after: avoid;
+    page-break-before: avoid;
+}
+h1, .h1 {font-size: 3.75rem;}
+h2, .h2 {font-size: 2.75rem;}
+h3, .h3 {font-size: 2.5rem;}
+h4, .h4 {font-size: 1.75rem;}
+h5, .h5 {font-size: 1.5rem;}
+h6, .h6 {font-size: 1.25rem;}
+//! Headers to default anchor color, and add link icon
+section a {
+    >  h1, >  h2, >  h3, >  h4, >  h5, >  h6,
+    > .h1, > .h2, > .h3, > .h4, > .h5, > .h6 {
+        color: $text-color;
+        @if $add-links-after-headers {
+            &::after {
+                opacity: 0;
+                content: '\00a0#{$link}';
+                color: rgba(255,255,255,0.52);
+                font-size: 75%;
+                font-family: $icon-font;
+                transition: opacity 0.3s;
+            }
+            &:hover::after {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.thin          {font-weight: 100 !important;}
+.light         {font-weight: 300 !important;}
+.normal-weight {font-weight: 400 !important;}
+.bold          {font-weight: 500 !important;}
+.alt {color: $color-alt !important;}
+
+/* Inline-elements */
+em, i {font-style: italic;}
+strong, b {font-weight: 500;}
+a {
+    color: $accent;
+    text-decoration: none;
+    &:hover {
+        border-bottom: 1px solid $accent;
+    }
+    &.no-underline {
+        text-decoration: none !important;
+        border-bottom: 0 !important;
+    }
+}
+abbr {
+    cursor: help;
+    text-decoration: none;
+    border-bottom: 1px dotted #777;
+}
+var {
+    font-style: italic;
+}
+mark {
+    padding: 0 2px;
+    background-color: rgba(255,255,0,0.52);
+    color: inherit;
+}
+del {
+    text-decoration: line-through;
+}
+ins {
+    text-decoration: none;
+    border-bottom: 1px solid;
+}
+
+/* Block elements */
+p {
+    margin: 1em 0;
+    padding: 0;
+}
+ul, ol {
+    padding-left: 2rem;
+}
+dl {
+    dt {
+        font-weight: bold;
+        border-bottom: 2px solid $color-fade;
+        &:after {
+            content: ": ";
+        }
+    }
+    dd {
+        padding-left: 0;
+        margin-bottom: 1rem;
+    }
+}
+img:not(.d) {
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+    opacity: 1;
+    filter: none;
+    transition: filter 0.3s;
+}
+//! Lazy load filter
+img[data-lazy]:not(.d) {
+    filter: blur(8px);
+}
+.embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    margin: 1rem 0;
+    img, iframe, video {
+        @extend .affix;
+    }
+}
+hr {
+    border: 0;
+    border-top: 1px solid $color-fade;
+}
+blockquote {
+    margin: 2rem 1rem;
+    border-left: 0.25rem solid $accent;
+    padding: 0 1rem;
+    font-size: 1.3rem;
+}
+/* Block elements: Figure */
+figure {
+    margin-left: 0;
+    margin-right: 0;
+    figcaption {
+        padding: 0.5rem 0;
+        line-height: 1.5;
+        border-bottom: 2px solid $color-fade;
+    }
+}
+/* Block elements: Code */
+pre, code, kbd, .code, .kbd {
+    font-family: "Roboto Mono", "Menlo", "Monaco", monospace;
+    background-color: #000;
+    color: #0f0;
+    font-weight: 300;
+}
+pre {
+    margin: 1rem 0;
+    padding: 1rem;
+    font-size: 1rem;
+    overflow-x: auto;
+}
+code, .code {
+    padding: 2px 4px;
+    font-size: 90%;
+}
+kbd, .kbd {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #fff;
+    background-color: #333;
+    border-radius: 3px;
+}
+/* Block elements: Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    thead {
+        text-align: left;
+        border-bottom: 2px solid $color-fade;
+    }
+    tfoot {
+        border-top: 2px dotted $color-fade;
+    }
+    th, td {
+        padding: 0.5rem;
+    }
+}
+//! Form fields
+//! Input
+.feather-input {
+    display: inline-block;
+    position: relative;
+    margin-top: 0.5em;
+    width: auto;
+    input {
+        width: 100%;
+        background: 0;
+        border: 0;
+        border-bottom: 1px solid $color-fade;
+        outline: 0;
+        color: inherit;
+        font: inherit;
+        transition: border 0.2s;
+        &:disabled {
+            border-bottom: 1px dotted $color-fade;
+        }
+        &:focus {
+            border-bottom-color: $accent;
+            & + label {
+                color: $accent;
+            }
+        }
+        & + label {
+            color: $color-alt;
+            position: absolute;
+            top: 0; left: 0;
+            transition: 0.2s;
+        }
+    }
+    input:focus + label,
+    &.feather-active input + label {
+        position: absolute;
+        left: 0;
+        top: -1.25em;
+        font-size: 70%;
+    }
+    &.feather-active input:focus + label {
+        color: $accent;
+    }
+    //! End input
+}
+/* Semantics */
+.semantic-body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+.semantic-body > main {
+    flex: 1;
+}
+header, footer {
+    background-color: $accent;
+    color: $against-a;
+    a {
+        color: $against-a;
+        text-decoration: none;
+        &:hover {
+            border-bottom: 1px solid $against-a;
+        }
+    }
+}
+footer {
+    padding-bottom: 1rem;
+}
+
+
+/* Helpers */
+.left {float: left !important;}
+.right {float: right !important;}
+.center {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.txt-left {text-align: left;}
+.txt-right {text-align: right;}
+.txt-center {text-align: center;}
+.txt-justify {text-align: justify;}
+
+.pad {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.side-pad {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.no-padding {padding: 0 !important;}
+.no-margin {margin: 0 !important;}
+.no-space {padding: 0 !important; margin: 0 !important;}
+
+.affix {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hide {display: none !important;}
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+}
+.invisible {visibility: hidden !important;}

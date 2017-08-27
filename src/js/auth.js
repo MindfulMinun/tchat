@@ -38,15 +38,15 @@
     googleSignIn.addEventListener('click', function () {
         var provider = signInProviders[0];
         auth.signInWithPopup(provider).then(function(result) {
-          var token = result.credential.accessToken;
-          var user = result.user;
+            var token = result.credential.accessToken;
+            var user = result.user;
         }).catch(function(e) {
-          // Handle Errors here.
-          var errorCode = e.code;
-          var errorMessage = e.message;
-          var email = e.email;
-          var credential = e.credential;
-          errorHandler(e);
+            // Handle Errors here.
+            var errorCode = e.code;
+            var errorMessage = e.message;
+            var email = e.email;
+            var credential = e.credential;
+            errorHandler(e);
         });
     });
     twitterSignIn.addEventListener('click', function () {
@@ -102,6 +102,11 @@
         var pword = pwordTxt.value;
         auth.createUserWithEmailAndPassword(email, pword).catch(function (e) {
             errorHandler(e);
+        });
+        user.sendEmailVerification().then(function() {
+            Materialize.toast('Account created. Please verify your email address.', 10000);
+        }).catch(function(error) {
+            Materialize.toast('An error occured. Please reverify your email. <a href="./manage-account/#reverify-email" class="btn-flat">Resend email</a>', 7000);
         });
     });
     signOut.addEventListener('click', function () {

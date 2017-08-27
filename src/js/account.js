@@ -22,6 +22,9 @@
         updateUserDB(user);
         if (user) {
             Materialize.toast('Logged in as ' + user.displayName, 3000);
+            if (user.emailVerified === false) {
+                Materialize.toast('Please verify your email address.  <a href="./manage-account/#reverify-email" class="btn-flat">Resend email</a>', 7000);
+            }
         } else {
             $(function () {
                 $('ul.tabs').tabs('select_tab', 'account');

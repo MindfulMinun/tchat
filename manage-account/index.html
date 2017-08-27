@@ -1,0 +1,214 @@
+---
+---
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Manage account &bull; tchat</title>
+
+        <meta name="theme-color" content="{{ site.accent }}">
+        <meta name="robots" content="noindex">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- OpenGraph -->
+        <!-- <meta name="og:title" content="tchat">
+        <meta name="og:description" content="Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and start tchatting!">
+        <meta name="description" content="Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and start tchatting!">
+        <meta name="og:url" content="https://benji.pw/tchat/">
+        <meta name="twitter:site" content="@MindfulMinun"> -->
+        <!-- Twitter cards -->
+        <!-- <meta name="twitter:title"   content="tchat">
+        <meta name="twitter:description" content="Sign in, choose a channel, start tchatting. It’s that simple. Don’t deal with complicated sign in methods. Just set your display name and start tchatting!">
+        <meta name="twitter:site"    content="@MindfulMinun">
+        <meta name="twitter:creator" content="@MindfulMinun">
+        <meta name="twitter:card"    content="summary"> -->
+
+        <link rel="shortcut icon" href="{{ site.icon }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,400,400i,500,500i|Material+Icons|Roboto+Mono:300">
+        <link rel="stylesheet" href="../src/feather/feather.min.css">
+        <!-- <link rel="stylesheet" href="../src/feather/grid.min.css"> -->
+    </head>
+    <body class="semantic-body">
+        <main>
+            <div class="container pad">
+                <h1 class="h2">Manage account</h1>
+                <p id="d">&hellip;</p>
+                <p>
+                    <em class="alt">
+                        Note: For security reasons, some sensitive actions require you to have authenticated into tchat recently. You may have to login again to continue operations.
+                    </em>
+                </p>
+                <hr>
+                <section class="pad" id="reset-password">
+                    <a href="#reset-password">
+                        <h2 class="h4">Reset password</h2>
+                    </a>
+                    <p>If you forgot your password, we can send you an email to help you set up a new one.</p>
+                    <div class="feather-input">
+                        <input type="email" id="reset-password-email" autocomplete="off">
+                        <label for="reset-password-email">
+                            Email address
+                        </label>
+                    </div>
+                    <button class="submit">Send email</button>
+                </section>
+                <section class="pad" id="reverify-email">
+                    <a href="#reverify-email">
+                        <h2 class="h4">Re-verify email address</h2>
+                    </a>
+                    <p>If you never recieved your verification email, you can resend one here.</p>
+                    <button class="submit" disabled>Send verification email</button>
+                </section>
+                <section class="pad" id="change-email">
+                    <a href="#change-email">
+                        <h2 class="h4">Change email address</h2>
+                    </a>
+                    <p>You can transfer your account to another email here. Be sure to re-verify your email after the transfer.</p>
+                    <div class="feather-input">
+                        <input type="email" id="change-email-email" autocomplete="off" disabled>
+                        <label for="change-email-email">
+                            Email address
+                        </label>
+                    </div>
+                    <button class="submit" disabled>Change email</button>
+                </section>
+                <section class="pad" id="delete-account">
+                    <a href="#delete-account">
+                        <h2 class="h4">Delete account</h2>
+                    </a>
+                    <p>This will delete the current logged in account from tchat.</p>
+                    <button class="submit" disabled>Delete account</button>
+                </section>
+            </div>
+        </main>
+        <footer class="no-padding">
+            <div class="container">
+                <p class="txt-right">
+                    <a href="https://benji.pw/tchat">Return to tchat</a>
+                </p>
+            </div>
+        </footer>
+        <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+        <script>
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyC1SIFXHnJGmXKlx5VkNezkeDNtC5sF0Ew",
+                authDomain: "tchat-a244d.firebaseapp.com",
+                databaseURL: "https://tchat-a244d.firebaseio.com",
+                projectId: "tchat-a244d",
+                storageBucket: "tchat-a244d.appspot.com",
+                messagingSenderId: "288998653697"
+            };
+            firebase.initializeApp(config);
+        </script>
+        <script src="../src/feather/feather.js" charset="utf-8"></script>
+        <script>
+        (function() {
+            'use strict';
+            var auth = firebase.auth();
+            var username;
+            var email;
+            var u;
+
+            var passwordResetBtn = document.querySelector('#reset-password .submit');
+            var reverifyEmail    = document.querySelector('#reverify-email .submit')
+            var changeEmailBtn   = document.querySelector('#change-email .submit');
+            var deleteAccount    = document.querySelector('#delete-account .submit');
+
+            //! Reset
+            passwordResetBtn.addEventListener('click', function () {
+                let a = document.querySelector('#reset-password input');
+                try {
+                    auth.sendPasswordResetEmail(a.value).then(function () {
+                        alert('An email was sent to ' + a.value + '. Follow the link in the email to reset your password.');
+                        a.value = '';
+                    }).catch(function (e) {
+                        console.log(e);
+                        a.value = '';
+                        alert("Error: " + e.message);
+                    });
+                } catch (e) {
+                    console.log(e);
+                    alert("You're not logged in. For security reasons, please return to tchat and log in.");
+                }
+            });
+
+            //! Reverify
+            reverifyEmail.addEventListener('click', function () {
+                try {
+                    u.sendEmailVerification().then(function() {
+                        alert('Verification email sent. Please check your email to confirm.');
+                    }).catch(function(e) {
+                        alert('Error: ' + e.message);
+                    });
+                } catch (e) {
+                    console.log(e);
+                    alert("You're not logged in. For security reasons, please return to tchat and log in.");
+                }
+            });
+
+            //! Change email
+            changeEmailBtn.addEventListener('click', function () {
+                if (!u) {
+                    alert("You're not logged in. For security reasons, please return to tchat and log in.");
+                    return;
+                }
+                var a = document.querySelector('#change-email input#change-email-email');
+                var e = prompt('WARNING: Changing your email address may have unintended consequences. For security reasons, please enter your current email address.');
+
+                if (e === u.email) {
+                    u.updateEmail(a.value).then(function() {
+                        alert('Email changed to ' + a.value + '. Be sure to re-verify your updated email address.');
+                    }).catch(function(e) {
+                        alert('Error: ' + e.message);
+                    });
+                } else {
+                    alert("That’s not the correct email address.");
+                }
+            });
+
+            //! Delete account
+            deleteAccount.addEventListener('click', function () {
+                if (!u) {
+                    alert("You're not logged in. For security reasons, please return to tchat and log in.");
+                    return;
+                }
+                var r = Math.random().toString(36).replace(/[0.]/gi, '');
+                var e = prompt(`WARNING: You're about to delete ${username} (${email}). By doing so, you'll lose access to some of your data on tchat and https://benji.pw. Your messages will NOT be deleted. If you need to delete messages from tchat, please contact tchat directly using the email address given in the FAQ.\n\nIf you're 100% sure that you're gonna do this, type in the following characters: ${r}`)
+
+                if (e === r) {
+                    //! Delete account
+                    u.delete().then(function() {
+                        alert(`${username} (${email}) was deleted. It was nice having you here!`);
+                        window.location.reload();
+                    }).catch(function(e) {
+                        console.log(e);
+                        alert('Error: ' + e.message);
+                    });
+                } else {
+                    alert("You didn't type in the characters correctly. Your account was not deleted");
+                }
+            });
+
+            //! UI
+            auth.onAuthStateChanged(function (user) {
+                var d = document.getElementById('d');
+                u = user;
+                if (user) {
+                    //! Logged in
+                    username = user.displayName;
+                    email = user.email;
+                    d.innerText = 'Logged in as ' + username + ' (' + email + ')';
+
+                    [].forEach.call(document.querySelectorAll('[disabled]'), function (el) {
+                        el.removeAttribute('disabled');
+                    });
+                } else {
+                    d.innerText = 'Not logged in. Some functions are unavailable.';
+                }
+            });
+
+        }());
+        </script>
+    </body>
+</html>

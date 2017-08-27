@@ -1,0 +1,150 @@
+//! Grid
+
+/*!
+ * Feather Grid - A lightweight CSS boilerplate
+ * @license MIT License
+ * @copyright 2017 MindfulMinun
+**/
+
+//! Variables
+$grid-gutter: 8px;
+
+$columns-s: 12;
+$columns-m: 12;
+$columns-l: 12;
+/*
+//! Screen sizes
+$small : 35.5rem;
+$medium: 48rem;
+$large : 80rem;
+
+$large-and-up   : "only screen and (min-width: #{$medium})" !default;
+$medium-and-up  : "only screen and (min-width: #{$small})"  !default;
+$small-and-up   : "only screen" !default;
+
+$large-and-down : "only screen and (max-width : #{$large}  - 1)" !default;
+$medium-and-down: "only screen and (max-width : #{$medium} - 1)" !default;
+$small-and-down : "only screen and (max-width : #{$small}  - 1)" !default;
+
+$medium-only    : "only screen and (min-width : #{$small}) and (max-width : #{$medium} -1)" !default;
+// */
+//! Grid & cell fallbacks
+.grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+.grid.top {
+    align-items: flex-start;
+}
+.grid.middle {
+    align-items: center;
+}
+.grid.bottom {
+    align-items: flex-end;
+}
+.grid .cell {
+    box-sizing: border-box !important;
+    // width: calc(100% - #{$grid-gutter});
+    margin: $grid-gutter / 2;
+    order: $columns-s + 1;
+}
+.no-space.grid .cell {
+    margin: 0;
+}
+
+//! Grid cell mixin
+@mixin grid-cell($width, $totalColumns, $gutter, $space: true) {
+    //! If space, add margin and gutter accordingly
+    @if $space {
+        @if $width == 0 {
+            display: none;
+        } @else {
+            $w: $width / $totalColumns * 100%;
+            width: calc(#{$w} - #{$gutter});
+            max-width: calc(100% - #{$gutter});
+            display: block;
+        }
+    } @else {
+        //! Else if no space, remove margin and gutter
+        @if $width == 0 {
+            display: none;
+        } @else {
+            width: $width / $totalColumns * 100%;
+            max-width: 100%;
+            margin: 0;
+            display: block;
+        }
+    }
+}
+
+@for $i from 0 through $columns-s {
+    //! Add small columns
+    .grid .cell.s#{$i} {
+        @include grid-cell($i, $columns-s, $grid-gutter);
+    }
+    .no-space.grid .cell.s#{$i} {
+        //! No space
+        @include grid-cell($i, $columns-m, $grid-gutter, false);
+    }
+}
+
+//! Add order classes
+@for $i from 0 through $columns-s {
+    .grid .cell.s-order-#{$i} {
+        order: $i;
+    }
+}
+//! Don't forget s-fill
+.grid .cell.s-fill {
+    flex: 1;
+    display: block;
+}
+
+@media #{$medium-and-up} {
+    @for $i from 0 through $columns-m {
+        //! Add medium columns
+        .grid .cell.m#{$i} {
+            @include grid-cell($i, $columns-m, $grid-gutter);
+        }
+        .no-space.grid .cell.m#{$i} {
+            //! No space
+            @include grid-cell($i, $columns-m, $grid-gutter, false);
+        }
+    }
+    //! Order classes
+    @for $i from 0 through $columns-m {
+        .grid .cell.m-order-#{$i} {
+            order: $i;
+        }
+    }
+    //! Don't forget m-fill
+    .grid .cell.m-fill {
+        flex: 1;
+        display: block;
+    }
+}
+@media #{$large-and-up} {
+    @for $i from 0 through $columns-l {
+        //! Add large columns
+        .grid .cell.l#{$i} {
+            @include grid-cell($i, $columns-l, $grid-gutter);
+        }
+        .no-space.grid .cell.l#{$i} {
+            //! No space
+            @include grid-cell($i, $columns-l, $grid-gutter, false);
+        }
+    }
+    //! Order classes
+    @for $i from 0 through $columns-l {
+        .grid .cell.l-order-#{$i} {
+            order: $i;
+        }
+    }
+    //! Don't forget l-fill
+    .grid .cell.l-fill {
+        flex: 1;
+        display: block;
+    }
+}
