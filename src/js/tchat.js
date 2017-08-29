@@ -53,7 +53,7 @@
             messageContainer.appendChild(li);
             messageToString(data)
             .then(function (string) {
-                li.innerHTML = string;
+                li.innerHTML = twemoji.parse(string);
                 updateScroll();
             });
         });
@@ -62,7 +62,7 @@
                 data = snapshot.val();
             messageToString(data)
             .then(function (string) {
-                liChanged.innerHTML = string;
+                liChanged.innerHTML = twemoji.parse(string);
             });
         });
         messages.on('child_removed', function (snapshot) {
@@ -114,9 +114,11 @@
         }
         function messageToString(data) {
             //! Regular expressions
-            var url = /[-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?/gi;
-            var em  = /\b_(\S[\s\S]*?)_\b/gi;
-            var bold = /\*\b(\S[\s\S]*?)\b\*/gi;
+            var url    = /[-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?/gi;
+            var em     = /(?:^| )\_(\S[\s\S]*?)\_(?:[ ,;!?.\s]|$)/g;
+            var bold   = /(?:^| )\*(\S[\s\S]*?)\*(?:[ ,;!?.\s]|$)/g;
+            // var emBold =
+            // var boldEm =
 
             //! Keep raw messsage for notification
             var raw = data.msg;
@@ -136,15 +138,17 @@
                 return a.outerHTML;
             });
             //! Em module
-            data.msg = data.msg.replace(em, function (str, s1) {
+            data.msg = data.msg.replace(em, function (str, s1, s2, s3) {
+                str = str.replace(/\_/gi, ' ');
                 var em = document.createElement('em');
-                em.innerHTML = s1;
+                em.innerHTML = str;
                 return em.outerHTML;
             });
             //! Bold module
-            data.msg = data.msg.replace(bold, function (str, s1) {
+            data.msg = data.msg.replace(bold, function (str, s1, s2, s3) {
+                str = str.replace(/\*/gi, ' ');
                 var strong = document.createElement('strong');
-                strong.innerHTML = s1;
+                strong.innerHTML = str;
                 return strong.outerHTML;
             });
 
