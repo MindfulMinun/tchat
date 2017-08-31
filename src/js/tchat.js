@@ -131,8 +131,8 @@
             //! Link module
             data.msg = data.msg.replace(url, function (str) {
                 var a = document.createElement('a'),
-                    h = Boolean(str.startsWith('http://') || str.startsWith('https://'));
-                a.href = h ? str : '//'+ str;
+                    h = Boolean(str.startsWith('http:\/\/') || str.startsWith('https:\/\/'));
+                a.href = h ? str : '\/\/'+ str;
                 a.innerHTML = str;
                 a.target = '_blank';
                 return a.outerHTML;
@@ -169,10 +169,10 @@
                         reg.showNotification(a.name || 'New message', {
                             body: raw,
                             icon: a.user.photo,
-                            badge: 'https://benji.pw/assets/icons/t.png',
+                            badge: 'https:\/\/benji.pw/assets/icons/t.png',
                             vibrate: [100,150,100],
-                            data: { id: 'tchat', url: 'https://benji.pw/tchat/' }
-                            // image: 'https://puu.sh/vK9JI/4b9737eec5.jpg',
+                            data: { id: 'tchat', url: 'https:\/\/benji.pw/tchat/' }
+                            // image: 'https:\/\/puu.sh/vK9JI/4b9737eec5.jpg',
                             // actions: [
                             //     {action: 'like', title: 'Like'},
                             //     {action: 'save', title: 'Favorite'}
@@ -190,7 +190,7 @@
                 let btn     = document.createElement('btn');
                 name.innerText = a.name;
                 name.classList.add('name');
-                name.href = `https://benji.pw/tchat/#u/${a.data.from}`;
+                name.href = 'https:\/\/benji.pw/tchat/#u/'+ a.data.from;
                 name.title = `${a.name}'s profile`;
                 message.innerHTML = a.msg;
                 message.classList.add('msg')

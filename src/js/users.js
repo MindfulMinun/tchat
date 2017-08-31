@@ -69,7 +69,7 @@
             section.querySelector('.user-section .time').innerText = (new Date(user.lastUpdated).toLocaleString());
 
             var raw = document.createElement('pre');
-            raw.innerText = '//! Raw user data:\n' + JSON.stringify(user, true, 4);
+            raw.innerText = '\/\/! Raw user data:\n' + JSON.stringify(user, true, 4);
             section.querySelector('.user-section').appendChild(raw);
         } else {
             Materialize.toast('That’s not a valid user ID. Please enter a valid user ID.', 5000);
