@@ -103,6 +103,19 @@
         </script>
         <script src="../src/feather/feather.js" charset="utf-8"></script>
         <script>
+        (function(G) {
+            'use strict';
+            //! Anti-XSS
+            var l = console.log;
+                l.c = console.clear;
+                l.handler = function (e) {
+                    alert('An unexpected event occurred. For security reasons, the page will be refreshed.');
+                    location.reload();
+                };
+            G.l = l;
+            l('%c%s', 'font-size: 40px; color:red;', 'no stop');
+            l('%c%s', 'font-size: 18px;', "im warning u dont paste anything in here unless u want 1337 mlg hackers to hack u");
+        }(this));
         (function() {
             'use strict';
             var auth = firebase.auth();
@@ -116,7 +129,12 @@
             var deleteAccount    = document.querySelector('#delete-account .submit');
 
             //! Reset
-            passwordResetBtn.addEventListener('click', function () {
+            passwordResetBtn.addEventListener('click', function (e) {
+                if (e.isTrusted === false) {
+                    l.handler(e);
+                    return;
+                }
+
                 let a = document.querySelector('#reset-password input');
                 try {
                     auth.sendPasswordResetEmail(a.value).then(function () {
@@ -134,7 +152,12 @@
             });
 
             //! Reverify
-            reverifyEmail.addEventListener('click', function () {
+            reverifyEmail.addEventListener('click', function (e) {
+                if (e.isTrusted === false) {
+                    l.handler(e);
+                    return;
+                }
+
                 try {
                     u.sendEmailVerification().then(function() {
                         alert('Verification email sent. Please check your email to confirm.');
@@ -148,7 +171,12 @@
             });
 
             //! Change email
-            changeEmailBtn.addEventListener('click', function () {
+            changeEmailBtn.addEventListener('click', function (e) {
+                if (e.isTrusted === false) {
+                    l.handler(e);
+                    return;
+                }
+
                 if (!u) {
                     alert("You're not logged in. For security reasons, please return to tchat and log in.");
                     return;
@@ -168,12 +196,17 @@
             });
 
             //! Delete account
-            deleteAccount.addEventListener('click', function () {
+            deleteAccount.addEventListener('click', function (e) {
+                if (e.isTrusted === false) {
+                    l.handler(e);
+                    return;
+                }
+
                 if (!u) {
                     alert("You're not logged in. For security reasons, please return to tchat and log in.");
                     return;
                 }
-                var r = Math.random().toString(36).replace(/[0.]/gi, '');
+                var r = Math.random().toString(36).replace(/[0.]/g, '');
                 var e = prompt(`WARNING: You're about to delete ${username} (${email}). By doing so, you'll lose access to some of your data on tchat and https://benji.pw. Your messages will NOT be deleted. If you need to delete messages from tchat, please contact tchat directly using the email address given in the FAQ.\n\nIf you're 100% sure that you're gonna do this, type in the following characters: ${r}`)
 
                 if (e === r) {

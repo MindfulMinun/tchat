@@ -396,8 +396,6 @@
                     a11y.dialog('close', 'switchChannel');
                 }
             });
-            $('.absolute-center').remove();
-            $('#appContainer').removeClass('hide');
             Notification.requestPermission(function (e) {
                 if (e === 'granted') {
                     tchat.notifs = true;
@@ -406,5 +404,16 @@
             });
         });
     }(jQuery));
+    document.addEventListener('tchat-ready', function () {
+        //! On tchat ready
+        var a = document.querySelector('.absolute-center'),
+            appContainer = document.getElementById('appContainer');
+        try {
+            a.parentNode.removeChild(a);
+            appContainer.classList.remove('hide');
+        } catch (e) {
+            //! hi lmao
+        }
+    });
     </script>
 </html>

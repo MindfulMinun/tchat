@@ -53,7 +53,7 @@
             messageContainer.appendChild(li);
             messageToString(data)
             .then(function (string) {
-                li.innerHTML = twemoji.parse(string);
+                li.innerHTML = string;
                 updateScroll();
             });
         });
@@ -62,7 +62,7 @@
                 data = snapshot.val();
             messageToString(data)
             .then(function (string) {
-                liChanged.innerHTML = twemoji.parse(string);
+                liChanged.innerHTML = string;
             });
         });
         messages.on('child_removed', function (snapshot) {
@@ -115,8 +115,8 @@
         function messageToString(data) {
             //! Regular expressions
             var url    = /[-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?/gi;
-            var em     = /(?:^| )\_(\S[\s\S]*?)\_(?:[ ,;!?.\s]|$)/g;
-            var bold   = /(?:^| )\*(\S[\s\S]*?)\*(?:[ ,;!?.\s]|$)/g;
+            var em     = /(^|[\s\S])\_(\S[\s\S]*?)\_([\s\S]|$)/g;
+            var bold   = /(^|[\s\S])\*(\S[\s\S]*?)\*([\s\S]|$)/g;
             // var emBold =
             // var boldEm =
 
@@ -132,24 +132,22 @@
             data.msg = data.msg.replace(url, function (str) {
                 var a = document.createElement('a'),
                     h = Boolean(str.startsWith('http://') || str.startsWith('https://'));
-                a.href = h ? str : '\/\/' /* '//' */ + str;
+                a.href = h ? str : '//'+ str;
                 a.innerHTML = str;
                 a.target = '_blank';
                 return a.outerHTML;
             });
             //! Em module
             data.msg = data.msg.replace(em, function (str, s1, s2, s3) {
-                str = str.replace(/\_/gi, ' ');
                 var em = document.createElement('em');
-                em.innerHTML = str;
-                return em.outerHTML;
+                em.innerHTML = s2;
+                return s1 + em.outerHTML + s3;
             });
             //! Bold module
             data.msg = data.msg.replace(bold, function (str, s1, s2, s3) {
-                str = str.replace(/\*/gi, ' ');
                 var strong = document.createElement('strong');
-                strong.innerHTML = str;
-                return strong.outerHTML;
+                strong.innerHTML = s2;
+                return s1 + strong.outerHTML + s3;
             });
 
             //! String constructor
@@ -164,6 +162,7 @@
                 };
                 return a;
             }).then(function (a) {
+                //! Notification module
                 var notOldMessage = (Number(a.data.timestamp) > Number(tchat.loadedTime));
                 if (!document.hasFocus() && tchat.notifs === true && notOldMessage) {
                     navigator.serviceWorker.ready.then(function (reg) {
@@ -181,7 +180,22 @@
                         });
                     });
                 }
-                return String(a.name + ': ' + a.msg);
+                return a;
+            }).then(function (a) {
+                //! Actually forming the message
+                a.msg = twemoji.parse(a.msg);
+                // console.log(a);
+                let name    = document.createElement('a');
+                let message = document.createElement('p');
+                let btn     = document.createElement('btn');
+                name.innerText = a.name;
+                name.classList.add('name');
+                name.href = `https://benji.pw/tchat/#u/${a.data.from}`;
+                name.title = `${a.name}'s profile`;
+                message.innerHTML = a.msg;
+                message.classList.add('msg')
+
+                return String(name.outerHTML + ': ' + message.outerHTML);
             });
         }
         function updateScroll() {
