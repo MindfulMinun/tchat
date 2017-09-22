@@ -17,9 +17,7 @@
             channel  = firebase.database().ref().child('chat/channels/' + tchat.currentChannel.id),
             messages = channel.child('msgs').orderByKey();
 
-        //! TODO: Add support for channels
         //! TODO: Add support for images
-        //! TODO: Add support for pseudo-Markdown
 
         if (switching === true) {
             M.toast('Switching to channel ' + tchat.currentChannel.id + '&hellip;', 1500);
@@ -117,8 +115,6 @@
             var url    = /[-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?/gi;
             var em     = /(^|[\s\S])\_(\S[\s\S]*?)\_([\s\S]|$)/g;
             var bold   = /(^|[\s\S])\*(\S[\s\S]*?)\*([\s\S]|$)/g;
-            // var emBold =
-            // var boldEm =
 
             //! Keep raw messsage for notification
             var raw = data.msg;
@@ -193,7 +189,7 @@
                 name.href = 'https:\/\/benji.pw/tchat/#u/'+ a.data.from;
                 name.title = `${a.name}'s profile`;
                 message.innerHTML = a.msg;
-                message.classList.add('msg')
+                message.classList.add('msg');
 
                 return String(name.outerHTML + ': ' + message.outerHTML);
             });

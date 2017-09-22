@@ -80,7 +80,7 @@
     });
 
     function updateUI() {
-        var anonUserIcon = 'https://benji.pw/assets/icons/t.png',
+        var anonUserIcon = 'https:\/\/benji.pw\/assets\/icons\/t.png',
             user = firebase.auth().currentUser;
         if (user) {
             welcome.innerText      = "Hi, " + (user.displayName || 'Anonymous') + '!';

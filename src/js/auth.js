@@ -41,7 +41,7 @@
             var token = result.credential.accessToken;
             var user = result.user;
         }).catch(function(e) {
-            // Handle Errors here.
+            //! Handle Errors here.
             var errorCode = e.code;
             var errorMessage = e.message;
             var email = e.email;
@@ -98,6 +98,7 @@
     });
     signUpWithEmail.addEventListener('click', function () {
         //! TODO: Verify real email
+        //! This has been mitigated with email verification
         var email = emailTxt.value;
         var pword = pwordTxt.value;
         auth.createUserWithEmailAndPassword(email, pword).catch(function (e) {
